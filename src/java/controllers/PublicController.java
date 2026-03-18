@@ -65,16 +65,25 @@ public class PublicController extends HttpServlet {
                     username = request.getParameter("username");
                     password = request.getParameter("password");
                     
-                    if(Utility.handleLogin(request, username, password, errors)){ //remember errors is reference type ArrayList() -> errors are passed by reference from called method to refernce object in memory "errors"
-                         session.setAttribute("username", username);
-                         System.out.println("PublicController -> User " + username + " has logged in.");
+                    if(session.getAttribute("username") == null){ //protects the current logged in user until they click logout
+                        if(Utility.handleLogin(request, username, password, errors)){ //remember errors is reference type ArrayList() -> errors are passed by reference from called method to refernce object in memory "errors"
+
+                            session.setAttribute("username", username);
+                             System.out.println("PublicController -> User " + username + " has logged in.");
+                        }else{
+                             System.out.println("A actor attempted to login.");
+                             url = "/public-authorization/login.jsp";
+                        }
                     }else{
-                         System.out.println("A actor attempted to login.");
-                         url = "/public-authorization/login.jsp";
+                        username = session.getAttribute("username").toString();
+                        url = "/public-authorization/login.jsp";
+                        errors.add(username + " is already logged in.");
+                        username = "";
                     }
                     break;
                 case ("logout"):
                     request.logout();
+                    session.removeAttribute("username");
                     url = "/index.jsp";
                     break;
                 case ("register"):
