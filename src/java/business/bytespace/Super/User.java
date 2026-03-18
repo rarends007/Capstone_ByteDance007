@@ -2,23 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package business.bytespace;
+package business.bytespace.Super;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author raren
  */
-public class User {
-    Integer userID;
-    String username;
-    String firstname;
-    String middlename;
-    String lastname;
-    String role; //only used in registration
-    String credential; //only used in registration
-    LocalDateTime timeStamp;
+public class User implements Serializable{
+    private Integer userID;
+    private String username;
+    private String firstname;
+    private String middlename;
+    private String lastname;
+    private String role; //only used in registration
+    private String credential; //only used in registration
+
     
     public User(){
         userID = null;
@@ -28,7 +29,6 @@ public class User {
         lastname = "";
         role = null;
         credential = null;
-        timeStamp = null;
     }
     
     public Integer getUserID() {
@@ -69,14 +69,6 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public LocalDateTime getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
     }
 
     public String getRole() {

@@ -5,7 +5,7 @@
 package controllers;
 
 
-import business.bytespace.User;
+import business.bytespace.Super.User;
 import data.UserDB;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

@@ -4,7 +4,7 @@
  */
 package data;
 
-import business.bytespace.User;
+import business.bytespace.Super.User;
 import data.ConnectionPool;
 import java.sql.*;
 import data.DBUtil;
