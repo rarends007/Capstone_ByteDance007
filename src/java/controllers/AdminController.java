@@ -84,6 +84,9 @@ public class AdminController extends HttpServlet {
                 }
 
                 break;
+                
+            case "addUser":
+                break;
         }
         
          request.setAttribute("errors", errors);
