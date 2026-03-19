@@ -1,7 +1,7 @@
 # Capstone_ByteDance007
 This is a student created gaming social media website.
 
-###Software Used:
+### Software Used:
 
 - Netbeans 24 or 25
 - Apache Tomcat 9
