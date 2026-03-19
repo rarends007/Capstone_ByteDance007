@@ -218,4 +218,85 @@ public class UserDB {
        return userHashMap;
     }
     
+    /**
+     * 
+     * @param userID int
+     * @return boolean indicating if deleted -> true if deleted, false if not
+     */
+    public static boolean deleteUser(int userID){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+       
+        int result = -1;
+        
+        boolean userDeleted = false; 
+        
+        String query = """
+                       DELETE FROM user
+                       WHERE user_id = ?;
+                       """;
+        try{
+            ImageDB.deleteAllImagesForUser(userID);
+            CommentDB.deleteAllCommentsForUser(userID);
+            PostDB.deleteAllPostsForUser(userID);
+            LogDB.deleteLogsForUser(userID);
+            MessageDB.deleteMessagesForUser(userID);
+            NotificationDB.deleteNotificationsForUser(userID);
+            ProfileDB.deleteAnyProfilesForUser(userID);
+            ReportDB.deleteAllReportsForUser(userID); //must execute in order so all fk are deleted then then finally the parent user record
+            
+            
+            deleteRole(userID);
+            
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userID);
+
+            result = ps.executeUpdate();
+            System.out.println("UserDB -> deleteUser() -> Delete executed -> rows effected -> " + result);
+            userDeleted = true;
+
+        }catch(SQLException ex){
+            System.out.println("\nUserDB -> deleteUser() failed-> \nExcetion -> " + ex +"\n") ;
+        }
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(connection);
+        
+        return userDeleted;
+    } 
+    
+     public static boolean deleteRole(int userID){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+       
+        int result = -1;
+        
+        boolean userDeleted = false; 
+        
+        String query = """
+                       DELETE FROM user_role
+                       WHERE user_id = ?;
+                       """;
+        try{
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userID);
+
+            result = ps.executeUpdate();
+            System.out.println("UserDB -> deleteUser() -> Delete executed -> rows effected -> " + result);
+            userDeleted = true;
+
+        }catch(SQLException ex){
+            System.out.println("\nUserDB -> deleteUser() failed-> \nExcetion -> " + ex +"\n") ;
+        }
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(connection);
+        
+        return userDeleted;
+    } 
+     
+     
+    
 }

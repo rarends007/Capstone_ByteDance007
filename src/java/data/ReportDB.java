@@ -12,9 +12,8 @@ import java.sql.SQLException;
  *
  * @author raren
  */
-public class CommentDB {
-    
-     public static boolean deleteAllCommentsForUser(int userID){
+public class ReportDB {
+     public static boolean deleteAllReportsForUser(int userID){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -24,19 +23,19 @@ public class CommentDB {
         boolean userDeleted = false; 
         
         String query = """
-                       DELETE FROM comment
-                       WHERE commenting_user_id = ?;
+                       DELETE FROM report
+                       WHERE reporting_user = ?;
                        """;
         try{
             ps = connection.prepareStatement(query);
             ps.setInt(1, userID);
 
             result = ps.executeUpdate();
-            System.out.println("CommentsDB -> deleteAllCommentsForUser() -> Delete executed -> rows effected -> " + result);
+            System.out.println("ReportDB -> deleteAllReportsForUser() -> Delete executed -> rows effected -> " + result);
             userDeleted = true;
 
         }catch(SQLException ex){
-            System.out.println("CommentsDB -> deleteAllCommentsForUser() failed-> \nExcetion -> " + ex +"\n") ;
+            System.out.println("\nReportDB -> deleteAllReportsForUser() failed-> \nExcetion -> " + ex +"\n") ;
         }
 
         DBUtil.closePreparedStatement(ps);

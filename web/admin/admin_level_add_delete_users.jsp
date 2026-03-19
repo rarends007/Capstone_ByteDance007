@@ -25,10 +25,14 @@
         
         <div>
             <h1>Delete User</h1>
+            <span>${errors}</span><!<!-- TODO: need to make this look nicer, functionality first though. - RA -->
+            <span>${messages}</span>
+            <br>
             <c:forEach var="item" items="${usersHashMap}">
                 <tr>
-                    <td><a href="Private?userid=${item.value.getUserID()}&username=${item.value.getUsername()}&action=deleteUser"> <c:out value="${item.value.getUsername()}" /><c:out value="item.value.getFirstname()"/>||<c:out value="item.value.getLastname()"/></a></td> <!--<href="parameters passed to controller from url in get request">Part shown to user</a>-->
+                    <td><a href="${pageContext.request.contextPath}/Admin?userID=${item.value.getUserID()}&username=${item.value.getUsername()}&action=deleteUser"> <c:out value="${item.value.getUsername()}" /> | Remove User | </a></td> <!--<href="parameters passed to controller from url in get request">Part shown to user</a>-->
                 </tr>
+                <br>
             </c:forEach>
        
         </div>

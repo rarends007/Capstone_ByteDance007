@@ -7,6 +7,7 @@ package controllers;
 import business.bytespace.Super.User;
 import data.UserDB;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,9 +36,12 @@ public class AdminController extends HttpServlet {
         
         HashMap<Integer, User> userHashMap = UserDB.getAllUsers();
         
-        String url = "/index.jsp";
+        String url = "/admin/index.jsp";
         
         String action = request.getParameter("action");
+        
+        ArrayList<String> messages = new ArrayList<>();
+        ArrayList<String> errors = new ArrayList<>();
         
         switch (action){
             case "getAllUsers":
@@ -50,9 +54,26 @@ public class AdminController extends HttpServlet {
                 request.setAttribute("usersHashMap", userHashMap);
                 url = "/admin/admin_level_add_delete_users.jsp";
                 break;
+            case "deleteUser":
+                messages.clear();
+                String userID = request.getParameter("userID");
+                String username = request.getParameter("username");
+                
+                if(UserDB.deleteUser(Integer.parseInt(userID))){
+                    System.out.println("user deleted " + username);
+                    messages.add("username " + username + "has been successfully deleted from the database.");
+                }else{
+                    errors.add("Unable to delete user " + username + ", issue with the database connection.");
+                }
+                
+                url = "/admin/admin_level_add_delete_users.jsp";
+                
+                break;
         }
         
-        
+         request.setAttribute("errors", errors);
+         request.setAttribute("messages", messages);
+          
           getServletContext()
                    .getRequestDispatcher(url)
                    .forward(request, response);
