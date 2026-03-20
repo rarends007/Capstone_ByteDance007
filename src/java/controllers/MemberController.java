@@ -61,6 +61,9 @@ public class MemberController extends HttpServlet {
                     }
                     url = "/member/upload_member_profile_photo.jsp";
                     break;
+                case "loadProfile" :
+                    
+                    break;
             }
             
             request.setAttribute("messages", messages);
