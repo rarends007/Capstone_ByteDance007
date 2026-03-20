@@ -15,12 +15,22 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css" />
     </head>
     <body class="pageColor"> 
+        <nav  class="floatNavRight" style="margin-top: 100px; width: 200px;">
+            <ul>
+                <li>
+                     <a href="${pageContext.request.contextPath}/index.jsp">Main Home</a>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/admin/index.jsp">Admin Home</a>
+                </li>
+            </ul>
+           
+        </nav>
         
-        <nav class="floatNavRight" style="margin-top: 100px"><a href="${pageContext.request.contextPath}/admin/index.jsp">Home</a></nav>
         <div>
             
             <h1 style="margin-left: 250px">Add User</h1>
-            <form  class="admin-form" style="margin-left: 150px" action="${pageContext.request.contextPath}/Admin" method="post">
+            <form  class="admin-form" action="${pageContext.request.contextPath}/Admin" method="post">
                 <input type="hidden" name="action" value="addUser"/>
                      
                 
