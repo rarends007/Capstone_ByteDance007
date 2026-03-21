@@ -15,7 +15,7 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/global.css" />
     </head>
     <body class="pageColor"> 
-        <nav  class="floatNavRight" style="margin-top: 100px; width: 200px;">
+        <nav  class="floatNavLeft" style="margin-top: 100px; width: 200px;">
             <ul>
                 <li>
                      <a href="${pageContext.request.contextPath}/index.jsp">Main Home</a>

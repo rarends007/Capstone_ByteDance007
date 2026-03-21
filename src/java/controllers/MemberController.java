@@ -4,6 +4,8 @@
  */
 package controllers;
 
+import data.ProfileDB;
+import data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -47,19 +49,31 @@ public class MemberController extends HttpServlet {
             throws ServletException, IOException {
         
             HttpSession session = request.getSession();
+            String username = session.getAttribute("username").toString();
+            
             ArrayList errors = new ArrayList();
             ArrayList messages = new ArrayList();
             
             String action = request.getParameter("action");
-            String url = "/index.jsp";
+            if(action == null){
+                action = "No action";
+            }
             
-            String currentURL = request.getRequestURL().toString();//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
+            String url = "/member/index.jsp";
             
-            switch (currentURL){ //get
-                case "http://localhost:8080/bytespace/member/index.jsp":
-                    String profilePhotoPathLoad = ""; //call db method to get the photo
+            boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
+            int userID = UserDB.getUserID(username);
+            
+           if(pageControllerIsMember){
+                    String profilePhotoPathLoad = ProfileDB.getProfilePhotoPath(userID); //call db method to get the photo and later all profile info that is loaded will also be populated in this switch case as well
                     
-                    break;
+                    
+                    if(profilePhotoPathLoad == null){
+                        profilePhotoPathLoad = "";
+                    }else{
+                        request.setAttribute("profile_photo", profilePhotoPathLoad);
+                        System.out.println("photo path is: " + profilePhotoPathLoad);
+                    }
             }
             
             switch (action){ //post
@@ -68,19 +82,23 @@ public class MemberController extends HttpServlet {
                     //Part 1 add photo to file system in C:/bytespace/photos/username/file.jpg
                     String profilePhotoFilePath = "";
                     try{
-                      profilePhotoFilePath =  IO.uploadFile(request, response, messages, ""); //replace "" with the members username later retrieved from the session object
-                      
+                      //profilePhotoFilePath =  IO.uploadFile(request, response, messages, ""); //replace "" with the members username later retrieved from the session object
+                      profilePhotoFilePath =  IO.uploadFileV2(request, response, messages, username); //new version of function
                       System.out.println("The profile photo path adding to db is: " + profilePhotoFilePath);
                     }catch(ServletException ex){
                         System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
                     }
                     
                     //part 2, submit photo path string to the database in the profile table
-                    
+                    if(ProfileDB.updateProfilePhoto(userID, profilePhotoFilePath)){
+                        messages.add("Profile photo updated");
+                    }else{
+                        errors.add("Unable to update profile photo, try again later.");
+                    }
                     
                     url = "/member/upload_member_profile_photo.jsp";
                     break;
-                case "loadProfile" :
+                case "placeholder case" :
                     
                     break;
             }

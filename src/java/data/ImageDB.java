@@ -47,7 +47,7 @@ public class ImageDB {
         return imagesDeleted;
     } 
      
-    public static String getProfilePhotoPath(String username){
+    public static String getAllIUserImagePhotoPaths(String username){
         String profilePhotoPath = "";
         int userID = UserDB.getUserID(username);
         
@@ -56,6 +56,7 @@ public class ImageDB {
         PreparedStatement ps = null;
         ResultSet rs = null;
         
+        //TODO when making a gallery add logic to get all of the images from the database that a user owns
         String query = """
                             
                        """;

@@ -14,7 +14,7 @@
     </head>
     <body>
         <div>
-            <nav class="floatNavRight" style="margin-top: 50px;"><a href="./../index.jsp">Home</a></nav>
+            <nav class="floatNavLeft" style="margin-top: 50px;"><a href="./../index.jsp">Home</a></nav>
         </div>
         
         <div class="member-login-form" style="margin-top: 25px;">

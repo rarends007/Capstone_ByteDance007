@@ -23,7 +23,7 @@
         </header>
         
         <div>
-            <nav class="floatNavRight"><a href="${pageContext.request.contextPath}/index.jsp">Home</a></nav>
+            <nav class="floatNavLeft"><a href="${pageContext.request.contextPath}/index.jsp">Home</a></nav>
         </div>
         
         <main class="clearFloat">

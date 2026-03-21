@@ -83,6 +83,8 @@ public class Utility {
                                 //Now create the users profile in the db
                                 if(ProfileDB.createUserProfile(user)){
                                     System.out.println("The users profile has been created! ");
+                                }else{
+                                    System.out.println("Utiilty -> handleregistoion() -> Failure creating the users profile.");
                                 }
                             }
                             
