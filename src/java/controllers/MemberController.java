@@ -54,8 +54,9 @@ public class MemberController extends HttpServlet {
             
             switch (action){
                 case "uploadProfilePhoto": 
+                    String profilePhotoFileName = "";
                     try{
-                       IO.uploadFile(request, response, messages);
+                      profilePhotoFileName =  IO.uploadFile(request, response, messages, ""); //replace "" with the members username later retrieved from the session object
                     }catch(ServletException ex){
                         System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
                     }
