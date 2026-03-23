@@ -54,17 +54,30 @@
                 </div>
                 <button class="button_primary">Post</button>
             </div>
-            <div class="post_container">
-                <div class="post_header">
-                    <!--<img src="./img/profile_img.JPG" alt="Profile Image" class="profile_image make_post_img">-->
-                    <div class="post_title">
-                        <span class="post_username">Scout Ernst</span>
-                        <span class="post_date">march 3 at 9:28 PM</span>
-                    </div>
-                    <button class="post_options"></button>
+            
+            <span id="changeImage" class="alterSpan"></span>
+            
+            <div id="middleColumnContainer"> <!-- profile feed will go here -->
+                <div id="profileFeedHeader"><Strong>Profile Feed</Strong></div>
+                <p>
+                    Lorem ipsum dolor Integer pelLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metusLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. Suspendisse aliquet, felis eu sodales ullamcorper, magna odio varius lectus, non hendrerit diam dui quis massa. Praesent sagittis erat augue, quis mollis dui impeLorem ipsum dolor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor Integer pellentesque elementum nisl, sed ullamcorper lectus auctor sed. Phasellus nec metus a risus mollis semper id et ante. 
+                </p>
+                <c:forEach var="post" items="${posts}">
+                <div>
+                    <c:forEach var="image" items="${post.value.images}">
+                        <img src="${image.value.imagePath}"/>
+                    </c:forEach>
+                    <p><c:out value="${post.value.postText}"/></p>
                 </div>
-                <textarea name="post_input" id="post_input"></textarea>
-
+                <div>
+                    <c:forEach var="comment" items="${post.value.comments}">
+                        <div>
+                        <h4>${comment.value.commentingUsername}</h4>
+                        <p>${comment.value.commentText}</p>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:forEach>
             </div>
             <div class="test"></div>
         </div>

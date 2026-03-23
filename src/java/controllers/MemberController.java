@@ -4,11 +4,17 @@
  */
 package controllers;
 
+import business.bytespace.Super.Post;
+import data.PostDB;
 import data.ProfileDB;
 import data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,6 +59,7 @@ public class MemberController extends HttpServlet {
             
             ArrayList errors = new ArrayList();
             ArrayList messages = new ArrayList();
+            HashMap<Integer, Post> posts = new HashMap<Integer, Post>();
             
             String action = request.getParameter("action");
             if(action == null){
@@ -74,6 +81,13 @@ public class MemberController extends HttpServlet {
                         request.setAttribute("profile_photo", profilePhotoPathLoad);
                         System.out.println("photo path is: " + profilePhotoPathLoad);
                     }
+                    
+                try {
+                    posts = PostDB.getUserPosts(userID);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
+                    errors.add("Unable to retrieve profile posts.");
+                }
             }
             
             switch (action){ //post
@@ -105,6 +119,7 @@ public class MemberController extends HttpServlet {
             
             request.setAttribute("messages", messages);
             request.setAttribute("errors", errors);
+            request.setAttribute("posts", posts);
        
             getServletContext()
                      .getRequestDispatcher(url)
