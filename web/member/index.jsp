@@ -44,6 +44,12 @@
             
             <span id="changeImage" class="alterSpan"></span>
             
+            
+            <div> <!-- user status would most likely go here. -- Kyle -- -->
+                <p></p>
+            </div>
+            
+            
             <div id="middleColumnContainer"> <!-- profile feed will go here -->
                 <div id="profileFeedHeader"><Strong>Profile Feed</Strong></div>
                 <p>
