@@ -93,9 +93,10 @@ public class PostDB {
         HashMap<Integer, Comment> comments = new HashMap<Integer, Comment>();
         
         String query = """
-                       SELECT *
-                       FROM comment
-                       WHERE post_id = ?;
+                       SELECT c.comment_id, c.commenting_user_id, c.post_id, c.comment_text, u.username 
+                       FROM comment c JOIN user u 
+                       ON c.commenting_user_id = u.user_id 
+                       WHERE c.post_id = ?;
                        """;
         
         ps = connection.prepareStatement(query);
@@ -107,8 +108,9 @@ public class PostDB {
                 int commentingUserID = rs.getInt("commenting_user_id");
                 int commentPostID = rs.getInt("post_id");
                 String commentText = rs.getString("comment_text");
+                String commentingUsername = rs.getString("username");
 
-                Comment comment = new Comment(commentID, commentingUserID, commentPostID, commentText);
+                Comment comment = new Comment(commentID, commentingUserID, commentPostID, commentText, commentingUsername);
 
                 comments.put(commentID, comment);
             }
