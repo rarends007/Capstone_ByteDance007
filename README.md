@@ -26,3 +26,12 @@ Create them based on the Main branch.
 example -> f-5-Post Images
 
 -------------------------------------------------------
+                Sprint Rule
+-------------------------------------------------------
+All sprints will be contained in there own branch cloned
+from the Main branch at the end of each sprint. Pull from
+that current Sprint branch when creating your off-shoot branch.
+
+At the end the current Sprint branch will be merged into the 
+Main branch and the new sprint will have a new Sprint branch
+created for it, then the process will repeat.
