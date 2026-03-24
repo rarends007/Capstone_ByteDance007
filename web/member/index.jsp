@@ -13,6 +13,7 @@
         <title>Member Profile</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/global.css" />
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/member/member.css" />
+        <nav></nav>
     </head>
     <body>
         <div class="left_panel">
@@ -58,12 +59,13 @@
             <span id="changeImage" class="alterSpan"></span>
             
             
-            <div> <!-- user status would most likely go here. -- Kyle -- -->
-                <p></p>
-                <form>
-                    
-                    <input type="submit" action="">
+            <div> <!-- user status would most likely go here. -- Kyle -- -->               
+                <form action="${pageContext.request.contextPath}/Member" method="post">
+                    <input type="hidden" id="userID" name="userID" value="${userID}">
+                    <input type="text" id="newStatus" name="newStatus">
+                    <input type="submit" value="Update Status">
                 </form>
+                <p>${userStatus}</p>
             </div>
             
             
