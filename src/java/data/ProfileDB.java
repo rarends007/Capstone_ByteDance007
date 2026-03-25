@@ -192,8 +192,6 @@ public class ProfileDB {
 
             boolean userStatusUpdated = false;
 
-            //LocalDateTime datetime = new LocalDateTime.now();
-
 
 
             int result = -1;

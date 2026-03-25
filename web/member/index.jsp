@@ -61,6 +61,7 @@
             
             <div> <!-- user status would most likely go here. -- Kyle -- -->               
                 <form action="${pageContext.request.contextPath}/Member" method="post">
+                    <input type="hidden" name="action" value="updateStatus">
                     <input type="hidden" id="userID" name="userID" value="${userID}">
                     <input type="text" id="newStatus" name="newStatus">
                     <input type="submit" value="Update Status">
