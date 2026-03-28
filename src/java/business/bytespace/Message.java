@@ -18,6 +18,9 @@ public class Message implements Serializable{
    private  Integer recieverID;
    private LocalDateTime timeStamp;
        
+   /**
+    * 
+    */
     public Message(){
         messageID = null;
         messageText = null;
@@ -26,6 +29,14 @@ public class Message implements Serializable{
         timeStamp = null;
     }
     
+    /**
+     * 
+     * @param messageID
+     * @param messageText
+     * @param senderID
+     * @param recieverID
+     * @param timeStamp 
+     */
     public Message(Integer messageID, String messageText, Integer senderID, Integer recieverID, LocalDateTime timeStamp) {
         this.messageID = messageID;
         this.messageText = messageText;
@@ -34,6 +45,13 @@ public class Message implements Serializable{
         this.timeStamp = timeStamp;
     }
     
+    /**
+     * 
+     * @param senderID
+     * @param recieverID
+     * @param messageText
+     * @param timeStamp 
+     */
     public Message(Integer senderID, Integer recieverID, String messageText, LocalDateTime timeStamp) {
         this.messageID = messageID;
         this.messageText = messageText;

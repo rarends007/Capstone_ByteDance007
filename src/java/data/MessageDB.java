@@ -7,9 +7,12 @@ package data;
 import business.bytespace.Message;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Timestamp; //needed to make the timestamp work from LocalDateTime to the mysql DATETIME datatype, and insert it using JDBC
+import java.time.ZoneId;
+import java.util.HashMap;
 
 /**
  *
@@ -53,6 +56,11 @@ public class MessageDB {
         return userDeleted;
     }
 
+    /**
+     * 
+     * @param userID
+     * @return 
+     */
     public static boolean setAllRecieverMessageUserNamesBlankForUser(int userID) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -77,10 +85,10 @@ public class MessageDB {
 
         } catch (SQLException ex) {
             System.out.println("MessageDB -> setAllRecieverMessageUserNamesBlankForUser() failed-> \nExcetion -> " + ex + "\n");
+        }finally{
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
         }
-
-        DBUtil.closePreparedStatement(ps);
-        pool.freeConnection(connection);
 
         return receiverMessagesSetToBlankForUser;
     }
@@ -116,10 +124,61 @@ public class MessageDB {
             messageInserted = true;
         } catch (SQLException ex) {
             System.err.println("MessageDB -> .insertMessage() ->\n * Failed to insert message into the database\n *Reason -> " + ex);
+        }finally{
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
         }
 
         return messageInserted;
 
+    }
+    
+    /**
+     * Returns all of the messages for the current logged in user.
+     * @param userID int
+     * @return Hashmap<Integer, Message>
+     */
+    public static HashMap<Integer, Message> retrieveAllMessagesForUser(Integer userID){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        HashMap<Integer, Message> messagesForUser = new HashMap();
+        
+        String query = """ 
+                               SELECT *
+                               FROM Message
+                               WHERE reciever_id = ?;
+                       """;        //retrieves all messages for a single user that they recieved
+        
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userID);
+            ps.executeQuery();
+            
+            while(rs.next()){
+                int messageID = rs.getInt("message_id");
+                String messgeText = rs.getString("message_text");
+                int senderID = rs.getInt("sender_id");
+                int recieverID = rs.getInt("reciever_id");
+                Timestamp time = rs.getTimestamp("timestamp");
+                
+                Message message = new Message(messageID, messgeText, senderID, recieverID, time.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()); //https://stackoverflow.com/questions/23263490/how-to-convert-java-sql-timestamp-to-localdate-java8-java-time
+                messagesForUser.put(messageID, message);
+            }
+                rs.close();
+            }catch (SQLException ex) {
+                System.err.println("Issue in .retrieveAllMessagesForUser -> \nSQLException -> Error thrown: " + ex);
+            }catch (Exception ex) {
+                 System.err.println("Issue in .retrieveAllMessagesForUser -> \nGeneral Exception -> Error thrown: " + ex);
+            }finally{
+                DBUtil.closePreparedStatement(ps);
+                pool.freeConnection(connection);
+            }
+            
+        return messagesForUser;
+        
     }
 
 }
