@@ -21,7 +21,9 @@ import java.util.HashMap;
 public class MessageDB {
 
     /**
-     * Deletes all messages for a user form the database. if message deleted, returns true.
+     * Deletes all messages for a user form the database. if message deleted,
+     * returns true.
+     *
      * @param userID int
      * @return boolean
      */
@@ -57,9 +59,9 @@ public class MessageDB {
     }
 
     /**
-     * 
+     *
      * @param userID
-     * @return 
+     * @return
      */
     public static boolean setAllRecieverMessageUserNamesBlankForUser(int userID) {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -85,7 +87,7 @@ public class MessageDB {
 
         } catch (SQLException ex) {
             System.out.println("MessageDB -> setAllRecieverMessageUserNamesBlankForUser() failed-> \nExcetion -> " + ex + "\n");
-        }finally{
+        } finally {
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
         }
@@ -94,7 +96,9 @@ public class MessageDB {
     }
 
     /**
-     * This function inserts one message into the database. Returns true if successful, false if not.
+     * This function inserts one message into the database. Returns true if
+     * successful, false if not.
+     *
      * @param message Message object
      * @return boolean
      */
@@ -117,14 +121,14 @@ public class MessageDB {
             ps.setInt(2, message.getRecieverID());
             ps.setString(3, message.getMessageText());
             ps.setTimestamp(4, Timestamp.valueOf(message.getTimeStamp())); //https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Timestamp.html
-            
+
             ps.executeUpdate();
-                    
+
             System.out.println("MessageDB -> .insertMessage() -> message inserted");
             messageInserted = true;
         } catch (SQLException ex) {
             System.err.println("MessageDB -> .insertMessage() ->\n * Failed to insert message into the database\n *Reason -> " + ex);
-        }finally{
+        } finally {
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
         }
@@ -132,53 +136,57 @@ public class MessageDB {
         return messageInserted;
 
     }
-    
+
     /**
-     * Returns all of the recieved messages for the current logged in user.
+     * Returns all of the received messages for the current logged in user
+     * ordered by the time the message was received in descending order, most
+     * recent messages first.
+     *
      * @param userID int
      * @return Hashmap<Integer, Message>
      */
-    public static HashMap<Integer, Message> retrieveAllMessagesForUser(Integer userID){
+    public static HashMap<Integer, Message> retrieveAllMessagesForUser(Integer userID) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         HashMap<Integer, Message> messagesForUser = new HashMap();
-        
+
         String query = """ 
                                SELECT *
                                FROM Message
-                               WHERE reciever_id = ?;
+                               WHERE reciever_id = ?
+                               ORDER BY timestamp DESC;
                        """;        //retrieves all messages for a single user that they recieved
-        
+
         try {
             ps = connection.prepareStatement(query);
             ps.setInt(1, userID);
-            ps.executeQuery();
-            
-            while(rs.next()){
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
                 int messageID = rs.getInt("message_id");
                 String messgeText = rs.getString("message_text");
                 int senderID = rs.getInt("sender_id");
                 int recieverID = rs.getInt("reciever_id");
                 Timestamp time = rs.getTimestamp("timestamp");
-                
+
                 Message message = new Message(messageID, messgeText, senderID, recieverID, time.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()); //https://stackoverflow.com/questions/23263490/how-to-convert-java-sql-timestamp-to-localdate-java8-java-time
                 messagesForUser.put(messageID, message);
             }
-                rs.close();
-            }catch (SQLException ex) {
-                System.err.println("Issue in .retrieveAllMessagesForUser -> \nSQLException -> Error thrown: " + ex);
-            }catch (Exception ex) {
-                 System.err.println("Issue in .retrieveAllMessagesForUser -> \nGeneral Exception -> Error thrown: " + ex);
-            }finally{
-                DBUtil.closePreparedStatement(ps);
-                pool.freeConnection(connection);
-            }
-            
+            rs.close();
+        } catch (SQLException ex) {
+            System.err.println("Issue in .retrieveAllMessagesForUser -> \nSQLException -> Error thrown: " + ex);
+        } catch (Exception ex) {
+            System.err.println("Issue in .retrieveAllMessagesForUser -> \nGeneral Exception -> Error thrown: " + ex);
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+
         return messagesForUser;
-        
+
     }
 
 }

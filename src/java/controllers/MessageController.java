@@ -42,58 +42,71 @@ public class MessageController extends HttpServlet {
         String url = "/messages/index.jsp";
         ArrayList<String> messages = new ArrayList();
 
-        
-        
         HttpSession session = request.getSession();
-        
+
+        try {
+            int userID = Integer.parseInt(session.getAttribute("userID").toString());
+            String firstname = session.getAttribute("firstname").toString();
+            String lastname = session.getAttribute("lastname").toString();
+            String username = session.getAttribute("username").toString();
+        } catch (Exception ex) {
+            System.err.println("Message DB near line 50 -> poppulating logged in user values from session -> \nException Error " + ex);
+        }
+
         //this controls the option sent back to the jsp when the js submits the form on the select element value in messages/index.js is set to value  'send' or 'received'
         String option = request.getParameter("messaging_option");
         if (option != null) {
             request.setAttribute("option", option);
-            
-            if(option.equals("send")){
+
+            if (option.equals("send")) {
                 //ensures the list on send_message.jsp is populated with user choices
                 HashMap<Integer, User> users = UserDB.getAllUsers();
-                if(users != null){
+                if (users != null) {
                     request.setAttribute("users", users);
                 }
-            }else if(option.equals("recieved")){
-                
+            } else if (option.equals("received")) {
+                try {
+                    int userID = Integer.parseInt(session.getAttribute("userID").toString());
+                    HashMap<Integer, Message> messagesForLoggedInUser = new HashMap();
+                    messagesForLoggedInUser = MessageDB.retrieveAllMessagesForUser(userID);
+
+                    request.setAttribute("messagesForLoggedInUser", messagesForLoggedInUser);
+                } catch (NullPointerException ex) {
+                    System.err.println("Message DB case retrieve_messages -> Null -> \nNull Exception Error " + ex);
+                } catch (Exception ex) {
+                    System.err.println("Message DB case retrieve_messages -> Null -> \nNull Exception Error " + ex);
+                }
             }
-            
+
         }
 
-        
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "send_message":
-                    
+
                     //values to pass to the message insert
                     LocalDateTime timeStamp = LocalDateTime.now();
 
                     String recieverUserID = request.getParameter("selected_recipient");
                     String senderUserID = session.getAttribute("userID").toString();
                     String message_text = request.getParameter("message_body");
-                    try{
+                    try {
                         int recieverUserIDInt = Integer.parseInt(recieverUserID);
                         int senderUserIDInt = Integer.parseInt(senderUserID);
-                        
+
                         Message sendingMessage = new Message(senderUserIDInt, recieverUserIDInt, message_text, timeStamp);
-                        
+
                         MessageDB.insertMessage(sendingMessage);
                         System.out.println("Message successfully sent");
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         System.err.println("Message Controller -> send_message -> Error sending message -> \nError Thrown: " + ex);
                     }
-                   
-                    
-                    
-                    
-                            
-                    
-                    
                     break;
+                case "reply":
+
+                    break;
+
             }
         }
 
