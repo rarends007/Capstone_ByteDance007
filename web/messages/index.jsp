@@ -31,6 +31,7 @@
         </c:choose>
     </c:if>
 
+<span>${messages}</span>
 </body>        
 <script>
     //   --- https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit 

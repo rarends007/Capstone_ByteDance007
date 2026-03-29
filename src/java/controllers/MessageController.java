@@ -129,7 +129,7 @@ public class MessageController extends HttpServlet {
                         messages.add("Replied to message from " + UserDB.getUsername(senderID)); //the sender is the one that sent the message to us here
                         
                         request.setAttribute("messages", messages);
-                        url = "/messages/recieved_message.jsp";
+                        url = "/messages/index.jsp";
                     }catch(Exception ex){
                         System.err.println("MessageController -> case reply_message\nException: " + ex);
                     }
