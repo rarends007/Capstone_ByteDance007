@@ -194,7 +194,7 @@ public class MessageDB {
 
         String query = """ 
                                SELECT *
-                               FROM  message
+                               FROM message
                                WHERE reciever_id = ?
                                ORDER BY timestamp DESC;
                        """;        //retrieves all messages for a single user that they recieved
