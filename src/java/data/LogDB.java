@@ -6,6 +6,7 @@ package data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -13,7 +14,8 @@ import java.sql.SQLException;
  * @author raren
  */
 public class LogDB {
-     public static boolean deleteLogsForUser(int userID){
+     
+    public static boolean deleteLogsForUser(int userID){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -43,4 +45,39 @@ public class LogDB {
         
         return logDeleted;
     } 
+     
+     
+    public static void createLoginLog(int logID, int userID, int actionID, String logText) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+         
+        int result = -1;
+        ResultSet rs = null;
+        
+        String query =
+                """
+                INSERT INTO log
+                (log_id, logged_user_id, logged_action_id, log_text)
+                values
+                (?, ?, ?, ?)
+                """;
+              
+        try 
+        {      
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, logID);
+            ps.setInt(2, userID);
+            ps.setInt(3, actionID);
+            ps.setString(4, logText);
+                        
+            result = ps.executeUpdate();
+            System.out.println("LogDB -> createLoginLog() -> Creation Executed -> rows effected -> " + result);
+        } 
+        catch (SQLException ex) 
+        {
+            System.out.println("LogDB -> createLoginLog() failed-> \nExcetion -> " + ex +"\n") ;
+        }
+    }
+     
 }

@@ -121,6 +121,12 @@ public class AdminController extends HttpServlet {
                 url = "/admin/admin_level_add_delete_users.jsp";
                 
                 break;
+            case "getUserList":
+                
+                request.setAttribute("usersHashMap", userHashMap);
+                url = "/admin/.jsp";
+                
+                break;
         }
         
          request.setAttribute("errors", errors);
