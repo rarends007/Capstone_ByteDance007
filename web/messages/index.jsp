@@ -13,11 +13,11 @@
         <title>Messaging</title>
     </head>
     <body>
-        <form id="form" action="${pageContext.request.contextPath}/Message" method="get">
-            <select name="messaging_option" id="messaging_option" >
+        <form id="form" action="${pageContext.request.contextPath}/Message" method="get" name="message_form">
+            <select name="messaging_option" id="messaging_option" > <!--value of select gets passed to controller as a parameter.-->
                 <option value="">--Choose and Option--</option>
                 <option value="send">Send Message</option>
-                <option value="recieved">Recieved Message</option>
+                <option value="received">Received Message(s)</option>
             </select>
         </form>
     <c:if test="${option != null}">
@@ -25,12 +25,13 @@
             <c:when test="${option.equals('send')}">
                 <c:import url="/messages/send_message.jsp"/>
             </c:when>
-            <c:when test="${option.equals('recieved')}">
+            <c:when test="${option.equals('received')}">
                 <c:import url="/messages/recieved_message.jsp"/>
             </c:when>
         </c:choose>
     </c:if>
 
+<span>${messages}</span>
 </body>        
 <script>
     //   --- https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit 
@@ -51,13 +52,19 @@
         select_value = document.querySelector("#messaging_option").value;
         console.log("\nvalue of select_value: " + select_value);
 
-        if (select_value === "send" || select_value === "recieved") {
+        if (select_value === "send" || select_value === "received") {
             console.log("loading send or recieve form");
 
             document.querySelector("#form").submit();
         }
 
     });
+    
+
 </script>
+<!-- Example for easier way to grab form elements
+    forms.formname.inputName
+    
+-->
 
 </html>
