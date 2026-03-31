@@ -95,7 +95,7 @@ public class MemberController extends HttpServlet {
 
                 //Part 1 add photo to file system in C:/bytespace/photos/username/file.jpg
                 String profilePhotoFilePath = "";
-                try {
+                try { 
                     //profilePhotoFilePath =  IO.uploadFile(request, response, messages, ""); //replace "" with the members username later retrieved from the session object
                     profilePhotoFilePath = IO.uploadFileV2(request, response, messages, username); //new version of function
                     System.out.println("The profile photo path adding to db is: " + profilePhotoFilePath);
@@ -141,9 +141,19 @@ public class MemberController extends HttpServlet {
                 break;
             case "makePost":
                 String postText = request.getParameter("postText");
-                String imageURL = request.getParameter("imageURL");
+                String imageURL = "";
+                try { 
+                    imageURL = IO.uploadFileV2(request, response, messages, username);
+                    System.out.println("The profile photo path adding to db is: " + imageURL);
+                } catch (ServletException ex) {
+                    System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
+                }
 
-                boolean success = PostDB.makePost(userID, imageURL, postText);
+                int postId = PostDB.makePost(userID, imageURL, postText);
+                boolean success = false;
+                if(postId != -1){
+                    success = PostDB.createPostImage(imageURL, postId, userID);
+                }
                 if (success) {
                     try {
                         posts = PostDB.getUserPosts(userID);
