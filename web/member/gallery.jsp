@@ -12,15 +12,15 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/member/member.css" />
 </head>
 <div>
-    <form method="post" action="${pageContext.request.contextPath}/Member">
-        <input  type="hidden" name="action" value="getImageForUser"/>
-        <input type="submit" value="get" class="button_primary"/>
-    </form>
-
     <div>
         <c:forEach var="image" items="${gallery}">                     
             <img src="${image}"/>
         </c:forEach>
     </div>
+    <form method="post" action="${pageContext.request.contextPath}/Member" enctype='multipart/form-data'>
+        <input  type="hidden" name="action" value="uploadGalleryPhoto"/>
+        <input type="file" name="file" />
+        <input type="submit" value="upload" class="button_primary"/>
+    </form>
 
 </div>

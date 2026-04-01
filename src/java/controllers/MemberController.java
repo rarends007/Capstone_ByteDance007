@@ -115,7 +115,7 @@ public class MemberController extends HttpServlet {
             case "getImageForUser":
                 ArrayList<String> photoFrilePaths = new ArrayList();
                 try {
-                    photoFrilePaths = ImageDB.getUserImagePhotoPathsById(userID);
+                    photoFrilePaths = ImageDB.getUserGalleryById(userID);
                     System.out.print("Images retrieved");
                 } catch (Exception ex) {
                     Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,7 +151,7 @@ public class MemberController extends HttpServlet {
 
                 int postId = PostDB.makePost(userID, imageURL, postText);
                 boolean success = false;
-                if(postId != -1){
+                if(postId != -1 && !"".equalsIgnoreCase(imageURL)){
                     success = PostDB.createPostImage(imageURL, postId, userID);
                 }
                 if (success) {
@@ -164,6 +164,26 @@ public class MemberController extends HttpServlet {
 
                 }
                 break;
+            case "uploadGalleryPhoto":
+                imageURL = "";
+                success = false;
+                try { 
+                    imageURL = IO.uploadFileV2(request, response, messages, username);
+                    System.out.println("The profile photo path adding to db is: " + imageURL);
+                } catch (ServletException ex) {
+                    System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
+                }
+                if(!"".equalsIgnoreCase(imageURL)){
+                   try {
+                       success = ImageDB.uploadImageByUserId(imageURL, userID);
+                    } catch (Exception ex) {
+                    Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
+                    errors.add("Unable to Post an Image.");
+                } 
+                }
+                if(success){
+                    
+                }
 
         }
 

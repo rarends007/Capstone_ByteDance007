@@ -56,6 +56,7 @@
                 <li><a href="${pageContext.request.contextPath}/Member">Profile</a></li>
                 <li>Friends</li>
                 <li><a href="${pageContext.request.contextPath}/Message">Messages</a></li>
+                <li><a href="${pageContext.request.contextPath}/Member?action=getImageForUser">Gallery</a></li>
             </ul>
         </nav>
         <a class="logout" href="${pageContext.request.contextPath}/Public?action=logout">Log out</a>
