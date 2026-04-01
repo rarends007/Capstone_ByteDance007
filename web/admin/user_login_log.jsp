@@ -13,9 +13,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:forEach items="${usersHashMap}" var="user">
+        <c:forEach items="${loginMap}" var="log">
             <tr>
-                <td></td>
+                <td>{log.value} {log.value.logged_action_ID}</td>
             </tr>
         </c:forEach>
     </body>

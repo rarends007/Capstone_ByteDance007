@@ -4,7 +4,9 @@
  */
 package controllers;
 
+import business.bytespace.Log;
 import business.bytespace.Super.User;
+import data.LogDB;
 import utilities.Utility;
 
 import data.UserDB;
@@ -122,11 +124,11 @@ public class AdminController extends HttpServlet {
                 
                 break;
             case "getUserList":
-               // loginLog = LogDB.getUserLogs;
+                HashMap<Integer, Log> loginLog = LogDB.getAllLogs();
                 
                 
                 request.setAttribute("usersHashMap", userHashMap);
-                
+                request.setAttribute("loginMap", loginLog);
                 
                 url = "/admin/user_login_log.jsp";
                 break;

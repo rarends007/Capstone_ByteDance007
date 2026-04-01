@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Log implements Serializable {
     private Integer logID;
     private Integer loggedAccountID;
-    private String loggedAction;
+    private Integer loggedAction;
     private String logNotes;
 
     public Log() {
@@ -23,7 +23,7 @@ public class Log implements Serializable {
            logNotes = null;
     }
 
-    public Log(Integer logID, Integer loggedAccountID, String loggedAction, String logNotes) {
+    public Log(Integer logID, Integer loggedAccountID, Integer loggedAction, String logNotes) {
         this.logID = logID;
         this.loggedAccountID = loggedAccountID;
         this.loggedAction = loggedAction;
@@ -46,11 +46,11 @@ public class Log implements Serializable {
         this.loggedAccountID = loggedAccountID;
     }
 
-    public String getLoggedAction() {
+    public Integer getLoggedAction() {
         return loggedAction;
     }
 
-    public void setLoggedAction(String loggedAction) {
+    public void setLoggedAction(Integer loggedAction) {
         this.loggedAction = loggedAction;
     }
 
