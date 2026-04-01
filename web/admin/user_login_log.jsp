@@ -15,8 +15,8 @@
     <body>
         <c:forEach items="${loginMap}" var="log">
             <tr>
-                <td>{log.value} {log.value.logged_action_ID}</td>
+                <td> ${log.value.getLogID()} ${log.value.getLoggedAction()} ${log.value.getLogNotes()}</td>
             </tr>
         </c:forEach>
-    </body>
+</body>
 </html>
