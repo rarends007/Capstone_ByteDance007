@@ -82,39 +82,16 @@ public class MemberController extends HttpServlet {
                 request.setAttribute("profile_photo", profilePhotoPathLoad);
                 System.out.println("photo path is: " + profilePhotoPathLoad);
             }
-            
-            String url = "/member/index.jsp";
-            
-            boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
-            int userID = UserDB.getUserID(username);
-            
-            
-            
-            
-            
-            
-           if(pageControllerIsMember){
-                    String profilePhotoPathLoad = ProfileDB.getProfilePhotoPath(userID); //call db method to get the photo and later all profile info that is loaded will also be populated in this switch case as well
-                    
-                    
-                    if(profilePhotoPathLoad == null){
-                        profilePhotoPathLoad = "";
-                    }else{
-                        request.setAttribute("profile_photo", profilePhotoPathLoad);
-                        System.out.println("photo path is: " + profilePhotoPathLoad);
-                    }
-                
-                    
-                try {
-                    LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(userID);
-                    LinkedHashMap<Integer, String> followers = FollowersDB.getFollowers(userID);
-                    
-                    request.setAttribute("numFollowing", following.size());
-                    request.setAttribute("numFollowers", followers.size());
-                } catch (SQLException ex) {
-                    errors.add("Unable to retrieve following numbers.");
-                }
-                    
+
+            try {
+                LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(userID);
+                LinkedHashMap<Integer, String> followers = FollowersDB.getFollowers(userID);
+
+                request.setAttribute("numFollowing", following.size());
+                request.setAttribute("numFollowers", followers.size());
+            } catch (SQLException ex) {
+                errors.add("Unable to retrieve following numbers.");
+            }
 
             try {
                 posts = PostDB.getUserPosts(userID);
@@ -130,7 +107,7 @@ public class MemberController extends HttpServlet {
 
                 //Part 1 add photo to file system in C:/bytespace/photos/username/file.jpg
                 String profilePhotoFilePath = "";
-                try { 
+                try {
                     //profilePhotoFilePath =  IO.uploadFile(request, response, messages, ""); //replace "" with the members username later retrieved from the session object
                     profilePhotoFilePath = IO.uploadFileV2(request, response, messages, username); //new version of function
                     System.out.println("The profile photo path adding to db is: " + profilePhotoFilePath);
@@ -177,7 +154,7 @@ public class MemberController extends HttpServlet {
             case "makePost":
                 String postText = request.getParameter("postText");
                 String imageURL = "";
-                try { 
+                try {
                     imageURL = IO.uploadFileV2(request, response, messages, username);
                     System.out.println("The profile photo path adding to db is: " + imageURL);
                 } catch (ServletException ex) {
@@ -186,16 +163,16 @@ public class MemberController extends HttpServlet {
 
                 int postId = PostDB.makePost(userID, imageURL, postText);
                 boolean success = false;
-                if(postId != -1){
+                if (postId != -1) {
                     success = PostDB.createPostImage(imageURL, postId, userID);
                 }
                 if (success) {
                     try {
                         posts = PostDB.getUserPosts(userID);
                     } catch (Exception ex) {
-                    Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
-                    errors.add("Unable to Make Post.");
-                }
+                        Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
+                        errors.add("Unable to Make Post.");
+                    }
 
                 }
                 break;
