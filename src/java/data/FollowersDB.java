@@ -17,7 +17,8 @@ import java.util.LinkedHashMap;
  */
 public class FollowersDB {
 
-    private LinkedHashMap<Integer, String> getFollowing(int userID)
+    //retrieves list of users that this user is following
+    public static LinkedHashMap<Integer, String> getFollowing(int userID)
             throws SQLException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -56,7 +57,8 @@ public class FollowersDB {
         return following;
     }
     
-    private LinkedHashMap<Integer, String> getFollowers(int userID)
+    //retrieve list of users that are following this user
+    public static LinkedHashMap<Integer, String> getFollowers(int userID)
             throws SQLException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
