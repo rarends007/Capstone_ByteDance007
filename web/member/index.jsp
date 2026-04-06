@@ -98,6 +98,13 @@
                                     <button type="submit" value="reply"/>
                                 </div>
                             </form>
+                            <form action="${pageContext.request.contextPath}/Member" method="POST">
+                                <input type="hidden" name="action" value="delete_comment"/>
+                                <input type="hidden" name="comment_id" value="${comment.value.commentID}"/>
+                                <div>
+                                    <button type="submit" value="Delete"/>
+                                </div><!-- delete a comment on click -->
+                            </form>
                         </div>
                     </c:forEach>
                     
