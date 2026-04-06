@@ -44,4 +44,40 @@ public class CommentDB {
         
         return commentDeleted;
     } 
+     
+   public static boolean insertComment(int userID, int postID, String commentText){
+       ConnectionPool pool = ConnectionPool.getInstance();
+       Connection connection = pool.getConnection();
+       PreparedStatement ps = null;
+       
+       boolean commentAdded = false;
+        
+       String query = """
+                        INSERT INTO comment
+                        (commenting_user_id, post_id, comment_text)
+                        VALUES
+                        (?, ?, ?); -- int, int string
+                      """;
+       
+       try{
+           connection.prepareStatement(query);
+           ps.setInt(1, userID);
+           ps.setInt(2, postID);
+           ps.setString(3, commentText);
+           
+           int rowsAffected = ps.executeUpdate();
+           System.out.println("comments inserted -> " + rowsAffected);
+           commentAdded = true;
+       }catch (SQLException ex){
+           System.err.println("commnetDB -> insertCommnet() -> \nSQLException ->  " + ex);
+       }catch (Exception ex){
+            System.err.println("commnetDB -> insertCommnet() -> \nGeneral Exception ->  " + ex);
+       }finally{
+           DBUtil.closePreparedStatement(ps);
+           pool.freeConnection(connection);
+       } 
+       return commentAdded;
+   }
+     
+     
 }
