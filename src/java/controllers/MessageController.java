@@ -63,7 +63,6 @@ public class MessageController extends HttpServlet {
                     messagesForLoggedInUser = MessageDB.retrieveAllMessagesForUser(userID);
 
                     request.setAttribute("messagesForLoggedInUser", messagesForLoggedInUser);
-
                 } catch (NullPointerException ex) {
                     System.err.println("Message DB case retrieve_messages -> Null -> \nNull Exception Error " + ex);
                 } catch (Exception ex) {
@@ -71,23 +70,6 @@ public class MessageController extends HttpServlet {
                 }
             }
 
-        }
-
-        //delete case -> goes here at end to reload messages again
-        String do_delete_message = request.getParameter("do_delete_message");
-        if (do_delete_message != null) {
-            try {
-                int userID = Integer.parseInt(session.getAttribute("userID").toString());
-                HashMap<Integer, Message> messagesForLoggedInUser = new HashMap();
-                messagesForLoggedInUser = MessageDB.retrieveAllMessagesForUser(userID);
-
-                request.setAttribute("messagesForLoggedInUser", messagesForLoggedInUser);
-
-            } catch (NullPointerException ex) {
-                System.err.println("Message DB case retrieve_messages -> Null -> \nNull Exception Error " + ex);
-            } catch (Exception ex) {
-                System.err.println("Message DB case retrieve_messages -> Null -> \nNull Exception Error " + ex);
-            }
         }
 
         String action = request.getParameter("action");
@@ -158,9 +140,17 @@ public class MessageController extends HttpServlet {
                     try {
                         int message_id = Integer.parseInt(request.getParameter("message_id"));
                         MessageDB.deleteMessage(message_id);
+                        
+                        //update messages displayed
+                        int userID = Integer.parseInt(session.getAttribute("userID").toString());
+                        HashMap<Integer, Message> messagesForLoggedInUser = new HashMap();
+                        messagesForLoggedInUser = MessageDB.retrieveAllMessagesForUser(userID);
 
-                        url = "/Message?do_delete_message=true";
-                        response.sendRedirect(url);
+                        request.setAttribute("messagesForLoggedInUser", messagesForLoggedInUser);
+                        
+                        //ensures the option for recieved messages stays selected on "received"
+                        request.setAttribute("option", "received");
+
                     } catch (NumberFormatException ex) {
                         System.err.println("MessageDB -> case delete_message -> \nNumberFormatException: " + ex);
                     } catch (Exception ex) {
@@ -170,13 +160,12 @@ public class MessageController extends HttpServlet {
                     break;
 
             }
+
         }
 
-        if (do_delete_message == null) {
-            getServletContext()
-                    .getRequestDispatcher(url)
-                    .forward(request, response);
-        }
+        getServletContext()
+                .getRequestDispatcher(url)
+                .forward(request, response);
 
     }
 
