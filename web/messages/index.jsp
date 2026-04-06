@@ -42,6 +42,15 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         console.log("value of select_value: " + select_value);
+        
+         select_value = document.querySelector("#messaging_option").value;
+        console.log("\nvalue of select_value: " + select_value);
+
+        if (select_value === "send" || select_value === "received") {
+            console.log("loading send or recieve form");
+
+            document.querySelector("#form").submit();
+        }
 
     });
 

@@ -91,11 +91,13 @@ public class PublicController extends HttpServlet {
                                  firstname = loggedInUser.getFirstname();
                                  middlename = loggedInUser.getMiddlename();
                                  lastname = loggedInUser.getLastname();
+                                 role = loggedInUser.getRole();
                                  
                                  //setting session attributes on login
                                  session.setAttribute("firstname", firstname);
                                  session.setAttribute("middlename", middlename);
                                  session.setAttribute("lastname", lastname);
+                                 session.setAttribute("role", role);
                                  
                                  String loggingUser = String.format("user %s has logged in", username);
                                  LogDB.createLoginLog(userID, 1, loggingUser);
