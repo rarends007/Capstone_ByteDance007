@@ -44,7 +44,14 @@ public class CommentDB {
         
         return commentDeleted;
     } 
-     
+   
+   /**
+    * Inserts a comment on a post.
+    * @param userID int
+    * @param postID int
+    * @param commentText String
+    * @return boolean, true if successful
+    */
    public static boolean insertComment(int userID, int postID, String commentText){
        ConnectionPool pool = ConnectionPool.getInstance();
        Connection connection = pool.getConnection();
