@@ -13,10 +13,38 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:forEach items="${loginMap}" var="log">
-            <tr>
-                <td> ${log.value.getLogID()} ${log.value.getLoggedAction()} ${log.value.getLogNotes()}</td>
-            </tr>
+
+        <details>
+            <summary>why?</summary>
+            <p>stuff and things</p>
+            <p>other stuff and things</p>
+        </details>
+
+
+        <c:forEach items="${usersHashMap}" var="user">
+            <details>
+                <summary>${user.value.getUserID()} - ${user.value.getUsername()}</summary>
+                <table>
+                    <thead>
+                    <th>Log ID</th>
+                    <th>Logged Action</th>
+                    <th>Log Notes</th>
+                    <th>Logged DateTime</th>
+                    </thead>
+
+                    <c:forEach items="${loginMap}" var="log">     
+                        <c:if test="${log.value.getLoggedAccountID() == user.value.getUserID()}">
+                            <tr>
+                                <td>${log.value.getLogID()}</td>
+                                <td>${log.value.getLoggedAction()}</td> 
+                                <td>${log.value.getLogNotes()}</td>
+                                <td>${log.value.getLoggedDateTime()}</td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+
+                </table>
+            </details>
         </c:forEach>
-</body>
+    </body>
 </html>

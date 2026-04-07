@@ -11,6 +11,7 @@ import utilities.Utility;
 
 import data.UserDB;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class AdminController extends HttpServlet {
                 
                 break;
             case "getUserList":
-                HashMap<Integer, Log> loginLog = LogDB.getAllLogs();
+                HashMap<Integer, Log> loginLog = LogDB.getAllLoginLogs();
                 
                 
                 request.setAttribute("usersHashMap", userHashMap);

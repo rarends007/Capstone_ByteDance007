@@ -10,6 +10,7 @@ import data.LogDB;
 import data.UserDB;
 //import data.UserDB;
 import java.io.IOException;
+import java.time.LocalDateTime;
 //import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -92,6 +93,7 @@ public class PublicController extends HttpServlet {
                                  middlename = loggedInUser.getMiddlename();
                                  lastname = loggedInUser.getLastname();
                                  role = loggedInUser.getRole();
+                                 LocalDateTime now = LocalDateTime.now();
                                  
                                  //setting session attributes on login
                                  session.setAttribute("firstname", firstname);
@@ -100,7 +102,8 @@ public class PublicController extends HttpServlet {
                                  session.setAttribute("role", role);
                                  
                                  String loggingUser = String.format("user %s has logged in", username);
-                                 LogDB.createLoginLog(userID, 1, loggingUser);
+                                
+                                 LogDB.createLoginLog(userID, 1, loggingUser, now);
                              }
                              System.out.println("PublicController -> User " + username + " has logged in.");
                         }else{

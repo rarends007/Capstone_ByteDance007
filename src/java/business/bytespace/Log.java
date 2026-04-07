@@ -5,6 +5,7 @@
 package business.bytespace;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -15,19 +16,22 @@ public class Log implements Serializable {
     private Integer loggedAccountID;
     private Integer loggedAction;
     private String logNotes;
+    private LocalDateTime loggedDateTime;
 
     public Log() {
            logID = null;
            loggedAccountID = null;
            loggedAction = null;
            logNotes = null;
+           loggedDateTime = null;
     }
 
-    public Log(Integer logID, Integer loggedAccountID, Integer loggedAction, String logNotes) {
+    public Log(Integer logID, Integer loggedAccountID, Integer loggedAction, String logNotes, LocalDateTime loggedDateTime) {
         this.logID = logID;
         this.loggedAccountID = loggedAccountID;
         this.loggedAction = loggedAction;
         this.logNotes = logNotes;
+        this.loggedDateTime = loggedDateTime;
     }
 
     public Integer getLogID() {
@@ -60,6 +64,14 @@ public class Log implements Serializable {
 
     public void setLogNotes(String logNotes) {
         this.logNotes = logNotes;
+    }
+
+    public LocalDateTime getLoggedDateTime() {
+        return loggedDateTime;
+    }
+
+    public void setLoggedDateTime(LocalDateTime loggedDateTime) {
+        this.loggedDateTime = loggedDateTime;
     }
     
     
