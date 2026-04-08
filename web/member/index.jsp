@@ -108,7 +108,7 @@
                     <input type="hidden" name="action" value="delete_post"/>
                     <input type="hidden" name="post_id" value="${post.value.postID}"/>
                     
-                    <input type="submit" value="delete post"/>
+                    <input type="submit" value="Delete Post"/>
                 </form><!-- deletes a post on click -->
                 <button id="commentsBtn" class="ui_btn"> <img src="${pageContext.request.contextPath}/img/comment.svg"/>${post.value.comments.size()} Comments </button>
                 
@@ -123,7 +123,7 @@
                                 <input type="hidden" name="post_id" value="${post.value.postID}"/>
                                 <textarea name="comment_text" rows="5" cols="35"></textarea>
                                 <div>
-                                    <button type="submit" value="reply"/>
+                                    <button type="submit" value="Reply"/>
                                 </div>
                             </form>
                             <form action="${pageContext.request.contextPath}/Member" method="POST">
