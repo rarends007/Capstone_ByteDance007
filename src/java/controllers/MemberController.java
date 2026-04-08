@@ -152,6 +152,25 @@ public class MemberController extends HttpServlet {
                 }
 
                 break;
+            case "get_all_users":
+                HashMap allUserHashMap = new HashMap();
+                allUserHashMap = UserDB.getAllUsers();
+                
+                request.setAttribute("allUsersHashMap", allUserHashMap);
+                break;
+            case "load_other_profile_data":
+                /*TODO: RA
+                //create a new jsp to put the viewed user data into based on the other user profile selected
+                //pull the other users profile data using DB functions. -> profile data needed -> 
+                            //status, user info, profile_picture, posts, comments, images associated to posts, 
+                            //number following and followers(NOT the actual usernames of them for privacy)
+                //add that pulled data to the request object passing to the jsp
+                //ensure the request object variables are correct in the JSP
+                //Test the shit out of it.
+                */
+                
+                
+                break;
             case "makePost":
                 String postText = request.getParameter("postText");
                 String imageURL = "";
