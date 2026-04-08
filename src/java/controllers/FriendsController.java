@@ -82,6 +82,18 @@ public class FriendsController extends HttpServlet {
 
                 request.setAttribute("title", "Followers");
             }
+            case "removeFollow" -> {
+                int followingID = Integer.parseInt(request.getParameter("followingID"));
+                
+                try {
+                    int rows = FollowersDB.removeFollow(userID, followingID);
+                    if (rows > 0) {
+                        message = "Successfully removed user from list.";
+                    }
+                } catch (Exception ex) {
+                    message = "Unable to remove user from list.";
+                }
+            }
         }
         request.setAttribute("follows", follows);
         request.setAttribute("message", message);
