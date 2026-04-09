@@ -12,27 +12,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Messaging</title>        
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/global.css" />
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/member/messages.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/messages/messages.css" />
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/member/member.css" />
     </head>
     <body>
         <c:import url="/member/left_panel.jsp" />
         <div class="main_content">
             <div class="messages_container">
-                <ul>
-                    <c:forEach var="item" items="${chatUsers}">                
-                        <li id="user-${item.key}" class="chat_user"> ${item.value.getUsername()}</li>
-                        </c:forEach>
-                </ul>
+                <div class="user_list_container">
+                    <h4>Messages</h4>
+                    <ul class="user_list">
+                        <c:forEach var="item" items="${chatUsers}">                
+                            <li id="user-${item.key}" class="chat_user"><div class="chat_avatar">${item.value.getFirstname()},${item.value.getLastname()}</div> ${item.value.getUsername()}</li>
+                            </c:forEach>
+                    </ul>
+                </div>
+    <!--            <form id="form" action="${pageContext.request.contextPath}/Message" method="get" name="message_form">
+                    <select name="messaging_option" id="messaging_option" > value of select gets passed to controller as a parameter.
+                        <option value="">--Choose and Option--</option>
+                        <option value="send">Send Message</option>
+                        <option value="received">Received Message(s)</option>
+                    </select>
+                </form>-->
+                <c:import url="/messages/recieved_message.jsp"/>
             </div>
-        <!--            <form id="form" action="${pageContext.request.contextPath}/Message" method="get" name="message_form">
-                        <select name="messaging_option" id="messaging_option" > value of select gets passed to controller as a parameter.
-                            <option value="">--Choose and Option--</option>
-                            <option value="send">Send Message</option>
-                            <option value="received">Received Message(s)</option>
-                        </select>
-                    </form>-->
-            <c:import url="/messages/recieved_message.jsp"/>
             <c:import url="/messages/send_message.jsp"/>
             <span>${messages}</span>
         </div>

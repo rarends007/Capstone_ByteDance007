@@ -49,33 +49,64 @@ closeUploadForm?.addEventListener('click', () => {
 });
 
 
-let select_value = document.querySelector("#messaging_option").value;
+//let select_value = document.querySelector("#messaging_option")?.value;
+//
+//document.addEventListener("DOMContentLoaded", () => {
+//    console.log("value of select_value: " + select_value);
+//
+//    select_value = document.querySelector("#messaging_option").value;
+//    console.log("\nvalue of select_value: " + select_value);
+//
+//    if (select_value === "send" || select_value === "received") {
+//        console.log("loading send or recieve form");
+//
+//        document.querySelector("#form").submit();
+//    }
+//
+//});
+//
+//
+//document.querySelector("#messaging_option").addEventListener("click", () => {
+//    console.log("message form selector cycled");
+//
+//    select_value = document.querySelector("#messaging_option").value;
+//    console.log("\nvalue of select_value: " + select_value);
+//
+//    if (select_value === "send" || select_value === "received") {
+//        console.log("loading send or recieve form");
+//
+//        document.querySelector("#form").submit();
+//    }
+//
+//});
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("value of select_value: " + select_value);
+const chatAvatars = document.querySelectorAll(".chat_avatar");
 
-    select_value = document.querySelector("#messaging_option").value;
-    console.log("\nvalue of select_value: " + select_value);
-
-    if (select_value === "send" || select_value === "received") {
-        console.log("loading send or recieve form");
-
-        document.querySelector("#form").submit();
-    }
-
+chatAvatars.forEach(avatar => {
+    const array = avatar.textContent.split(',');
+    const abbreviation = array.map(name => name.at(0));
+    avatar.textContent = abbreviation.toString().replace(',', '');
 });
 
+const chatUsersList = document.querySelectorAll(".chat_user");
+const messageСontainers = document.querySelectorAll(".message_container");
 
-document.querySelector("#messaging_option").addEventListener("click", () => {
-    console.log("message form selector cycled");
 
-    select_value = document.querySelector("#messaging_option").value;
-    console.log("\nvalue of select_value: " + select_value);
+chatUsersList.forEach(user => user.classList.remove("current"));
+chatUsersList[0]?.classList.add("current");
 
-    if (select_value === "send" || select_value === "received") {
-        console.log("loading send or recieve form");
+messageСontainers.forEach(container => container.classList.add("hidden"));
+messageСontainers[0]?.classList.remove("hidden");
 
-        document.querySelector("#form").submit();
-    }
+function showHideChatByUser(id) {
+    messageСontainers.forEach(chat => chat.classList.add('hidden'));
+    chatUsersList.forEach(user => user.classList.remove('current'));
+    document.querySelector(`#chat-${id}`).classList.remove('hidden');
+    document.querySelector(`#user-${id}`).classList.add('current');
+}
 
+chatUsersList.forEach(user => {
+    const id = Number(user.id.replace('user-', 0));
+    user.addEventListener('click', () => showHideChatByUser(id));
 });
+

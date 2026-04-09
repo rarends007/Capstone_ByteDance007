@@ -6,4 +6,80 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Apr 8, 2026, 6:05:21 PM
     Author     : mrjel
 */
+.user_list{
+    list-style: none;
+    padding-left: 0;
+}
 
+.messages_container
+{
+    display: flex;
+    background: #141124;
+}
+.user_list_container{
+    border-right: 1px solid #1aaed1;
+}
+.user_list_container h4{
+    margin-bottom: 15px;
+}
+
+.chat_user{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    padding-right: 30px;
+}
+
+.chat_user.current{
+    background-color: #2a2742;
+    border-left: 4px solid #00ceff
+}
+
+.chat_user:hover{
+    background-color: #242239;
+    cursor: pointer
+}
+
+.chat_avatar {
+    width: 40px;
+    background: #1aa7a7;
+    border-radius: 50%;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+.chat_messages {
+    list-style: none;
+    padding-left: 15px;
+}
+.recieved_message {
+    background: #2A2742;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    max-width: 90%;
+}
+
+.message_time{
+    color: #adadad;
+}
+
+.message_actions{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.message_actions input[type="submit"] {
+    background: none;
+    border: none;
+    margin: 0;
+    color: #1aa7a7;
+}
+
+.message_actions input[type="submit"]:hover {
+    cursor: pointer;
+    color: #00ceff;
+}
