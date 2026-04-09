@@ -90,7 +90,8 @@ chatAvatars.forEach(avatar => {
 
 const chatUsersList = document.querySelectorAll(".chat_user");
 const messageСontainers = document.querySelectorAll(".message_container");
-
+const replyId = document.forms.reply_message?.sender_id.value;
+const messageTime = document.querySelectorAll(".message_time");
 
 chatUsersList.forEach(user => user.classList.remove("current"));
 chatUsersList[0]?.classList.add("current");
@@ -98,15 +99,36 @@ chatUsersList[0]?.classList.add("current");
 messageСontainers.forEach(container => container.classList.add("hidden"));
 messageСontainers[0]?.classList.remove("hidden");
 
+
 function showHideChatByUser(id) {
+    if (replyId !== id && replyId) {
+        document.forms.reply_message.sender_id.value = id;
+        const p = document.querySelector('.reply_message_container p');
+        if (p)
+            p.textContent = "";
+        
+        const span = document.querySelector('.reply_message_container span');
+        if (span)
+            span.textContent = "";
+    }
+    if (replyId !== id && !replyId) {
+       document.forms.reply_message.sender_id.value = id;
+    }
     messageСontainers.forEach(chat => chat.classList.add('hidden'));
     chatUsersList.forEach(user => user.classList.remove('current'));
     document.querySelector(`#chat-${id}`).classList.remove('hidden');
     document.querySelector(`#user-${id}`).classList.add('current');
 }
 
+if (replyId) {
+    showHideChatByUser(Number(replyId));
+}
 chatUsersList.forEach(user => {
     const id = Number(user.id.replace('user-', 0));
     user.addEventListener('click', () => showHideChatByUser(id));
 });
 
+messageTime.forEach(block => {
+    const date = new Date(block.textContent);
+    block.textContent = date.toLocaleString();
+});

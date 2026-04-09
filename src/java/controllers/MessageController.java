@@ -54,8 +54,8 @@ public class MessageController extends HttpServlet {
             HashMap<Integer, Message> messagesForLoggedInUser = new HashMap();
             messagesForLoggedInUser = MessageDB.retrieveAllMessagesForUser(userID);
 
+            // Creating HashMap with unique users to display in the chat
             HashMap<Integer, User> chatUsers = new HashMap();
-
             for (Map.Entry<Integer, User> entry : users.entrySet()) {
                 for (Message message : messagesForLoggedInUser.values()) {
                     if (entry.getKey() == message.getSenderID()) {
@@ -63,26 +63,32 @@ public class MessageController extends HttpServlet {
                     }
                 }
             }
-            
-            HashMap<Integer, ArrayList<Message> > messagesByUser = new HashMap<>();
-            
-            for (Message message : messagesForLoggedInUser.values()){
-                int userId = message.getSenderID();
-                
-                boolean isExists = messagesByUser.containsKey(userId);
-                
-                if(!isExists){
-                    ArrayList <Message> array = new ArrayList<>();
-                    array.add(messagesForLoggedInUser.get(message.getMessageID())); 
-                    messagesByUser.put(userId, array);
+
+            // Sorting messages by user
+            HashMap<Integer, ArrayList<Message>> messagesByUser = new HashMap<>();
+
+            for (Message message : messagesForLoggedInUser.values()) {
+                int userId = -1;
+                if(message.getRecieverID() == userID) {
+                    userId = message.getSenderID();
                 }
                 else{
-                    ArrayList <Message> array = messagesByUser.get(userId);
+                    userId = message.getRecieverID();
+                }
+                
+                boolean isExists = messagesByUser.containsKey(userId);
+
+                if (!isExists) {
+                    ArrayList<Message> array = new ArrayList<>();
+                    array.add(messagesForLoggedInUser.get(message.getMessageID()));
+                    messagesByUser.put(userId, array);
+                } else {
+                    ArrayList<Message> array = messagesByUser.get(userId);
                     array.add(messagesForLoggedInUser.get(message.getMessageID()));
                     messagesByUser.put(userId, array);
                 }
             }
-            
+
             request.setAttribute("messagesByUser", messagesByUser);
             request.setAttribute("chatUsers", chatUsers);
             request.setAttribute("messagesForLoggedInUser", messagesForLoggedInUser);
@@ -126,7 +132,7 @@ public class MessageController extends HttpServlet {
 
                         if (message != null) {
                             request.setAttribute("messageReplyingTo", message);
-                            url = "/messages/reply_message.jsp";
+                            url = "/messages/index.jsp";
                         }
                     } catch (NumberFormatException ex) {
                         System.err.println("MessageController -> case send_message -> \nExcettion: " + ex);
@@ -145,8 +151,8 @@ public class MessageController extends HttpServlet {
                         Message responseMessage = new Message(recieverID, senderID, messageReplyText, timestamp); //the reciever is the person replying to the message here, "you"
 
                         MessageDB.insertMessage(responseMessage);
+                        
                         messages.add("Replied to message from " + UserDB.getUsername(senderID)); //the sender is the one that sent the message to us here
-
                         request.setAttribute("messages", messages);
                         url = "/messages/index.jsp";
                     } catch (Exception ex) {

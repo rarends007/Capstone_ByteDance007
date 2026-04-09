@@ -79,8 +79,8 @@ public class MemberController extends HttpServlet {
 
             if (profilePhotoPathLoad == null) {
                 profilePhotoPathLoad = "";
-            } else {
-                request.setAttribute("profile_photo", profilePhotoPathLoad);
+            } else {                
+                session.setAttribute("profile_photo", profilePhotoPathLoad);
                 System.out.println("photo path is: " + profilePhotoPathLoad);
             }
 
@@ -247,7 +247,7 @@ public class MemberController extends HttpServlet {
         }
 
         request.setAttribute("userID", userID);
-        request.setAttribute("userStatus", userStatus);
+        session.setAttribute("userStatus", userStatus);
         request.setAttribute("messages", messages);
         request.setAttribute("errors", errors);
         request.setAttribute("posts", posts);

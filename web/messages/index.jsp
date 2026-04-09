@@ -20,27 +20,21 @@
         <div class="main_content">
             <div class="messages_container">
                 <div class="user_list_container">
-                    <h4>Messages</h4>
                     <ul class="user_list">
-                        <c:forEach var="item" items="${chatUsers}">                
-                            <li id="user-${item.key}" class="chat_user"><div class="chat_avatar">${item.value.getFirstname()},${item.value.getLastname()}</div> ${item.value.getUsername()}</li>
-                            </c:forEach>
-                    </ul>
-                </div>
-    <!--            <form id="form" action="${pageContext.request.contextPath}/Message" method="get" name="message_form">
-                    <select name="messaging_option" id="messaging_option" > value of select gets passed to controller as a parameter.
-                        <option value="">--Choose and Option--</option>
-                        <option value="send">Send Message</option>
-                        <option value="received">Received Message(s)</option>
-                    </select>
-                </form>-->
-                <c:import url="/messages/recieved_message.jsp"/>
+                        <c:forEach var="item" items="${chatUsers}">  
+                            <c:if test="${item.key != userID}">
+                                  <li id="user-${item.key}" class="chat_user"><div class="chat_avatar">${item.value.getFirstname()},${item.value.getLastname()}</div> ${item.value.getUsername()}</li>
+                            </c:if>
+                        </c:forEach>
+                </ul>
             </div>
-            <c:import url="/messages/send_message.jsp"/>
-            <span>${messages}</span>
+            <c:import url="/messages/recieved_message.jsp"/>
         </div>
-        <div class="right_panel"></div>
-    </body>       
-    <script src="${pageContext.request.contextPath}/member/script.js"></script>
+        <c:import url="/messages/send_message.jsp"/>
+        <span>${messages}</span>
+    </div>
+    <div class="right_panel"></div>
+</body>       
+<script src="${pageContext.request.contextPath}/member/script.js"></script>
 
 </html>
