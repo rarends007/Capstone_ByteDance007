@@ -13,10 +13,10 @@
         <title>All Profiles</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>All Profiles</h1>
         <ul>
             <c:forEach var="users" items="${allUsersHashMap}">
-                <li><a href="${pageContext.request.contextPath}/Member?action=load_other_user&username=${users.value.getUserID()}">${users.value.getUsername()}</a></li>
+                <li><a href="${pageContext.request.contextPath}/Member?action=load_other_profile&userID=${users.value.getUserID()}">${users.value.getUsername()}</a></li>
             </c:forEach>
         </ul>
     </body>

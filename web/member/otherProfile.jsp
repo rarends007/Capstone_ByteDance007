@@ -19,23 +19,12 @@
     <div class="left_panel">
         <div class="profile_info_container">
             <img src="${pageContext.request.contextPath}/img/profile_bg.png" alt="Profile Background" class="profile_background">
-            <img src="${profile_photo}" alt="Profile Image" class="profile_image" id="profilePicShape">
+            <img src="${loaded_profile_profile_photo}" alt="Profile Image" class="profile_image" id="profilePicShape">
             <c:import url="upload_member_profile_photo.jsp" />
-            <h5 class="profile_name">${username}</h5>
-            <c:choose>
-                <c:when test="${!''.equals(userStatus)}">
-                    <p class="status">${userStatus}</p>
-                </c:when>
-                <c:otherwise>
-                    <p class="status">Click Here to set a Status</p>
-                </c:otherwise>
-            </c:choose>
-            <form action="${pageContext.request.contextPath}/Member" method="post" class="hidden status_form">
-                <input type="hidden" name="action" value="updateStatus">
-                <input type="hidden" id="userID" name="userID" value="${userID}">
-                <input type="text" id="newStatus" name="newStatus">
-                <input type="submit" value="">
-            </form>
+            <h5 class="profile_name">${loadedProfileUsername}</h5>
+            
+            <p class="loaded_profile_status">${loadedProfileStatus}</p> 
+    
         </div>
         <div class="follow_container">
             <div class="following_container">
@@ -51,7 +40,7 @@
                         </c:choose>
                     </p>
                 </div>
-                <p><a href="Friends?action=getFollowing">Following</a></p>
+                <p>Following</p>
             </div>
             <div class="following_container">
                 <div class="follow_num">
@@ -66,20 +55,21 @@
                         </c:choose>
                     </p>
                 </div>
-                <p><a href="Friends?action=getFollowers">Followers</a></p>
+                <p>Followers</p>
             </div>
         </div>
         <nav>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/Member">Profile</a></li>
-                <li>Friends</li>
+                <li><a href="${pageContext.request.contextPath}/Member?action=get_all_users">All Site Users</a></li>
                 <li><a href="${pageContext.request.contextPath}/Message">Messages</a></li>
             </ul>
         </nav>
         <a class="logout" href="${pageContext.request.contextPath}/Public?action=logout">Log out</a>
     </div>
     <div class="main_content">
-        <div class="make_post_container">
+        <div>
+            <!-- could add functionality to post to another users profile using this form, likely won't -RA
             <form action="${pageContext.request.contextPath}/Member" method="post" enctype='multipart/form-data'>
                 <div class="make_post_input">
                     <img src="${profile_photo}" alt="Profile Image" class="profile_image make_post_img">
@@ -92,24 +82,21 @@
                 </div>
                 <input type="submit" class="button_primary" value="Post">
             </form>
+            -->
+            <h5 class="loaded_other_profile_posts_heading">Posts</h5>
         </div>
 
         <c:forEach var="post" items="${posts}">
             <div class="post_container">
                 <div class="post_header">
-                    <img src="${profile_photo}" alt="Profile Image" class="profile_image make_post_img">
+                    <img src="${loaded_profile_profile_photo}" alt="Profile Image" class="profile_image make_post_img">
                     <h4>${username}</h4>
                 </div>
                 <p class="post_text"><c:out value="${post.value.postText}"/></p>
                 <c:forEach var="image" items="${post.value.images}">
                     <img src="${image.value.imagePath}" class="post_img"/>
                 </c:forEach>
-                <form action="${pageContext.request.contextPath}/Member" method="POST"/>
-                    <input type="hidden" name="action" value="delete_post"/>
-                    <input type="hidden" name="post_id" value="${post.value.postID}"/>
-                    
-                    <input type="submit" value="Delete Post"/>
-                </form><!-- deletes a post on click -->
+                
                 <button id="commentsBtn" class="ui_btn"> <img src="${pageContext.request.contextPath}/img/comment.svg"/>${post.value.comments.size()} Comments </button>
                 
                 <div class="comments_container hidden">

@@ -221,6 +221,10 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
     cursor:pointer;
 }
 
+.loaded_profile_status{ /*RA added*/
+       padding: 0 15px;
+}
+
 .status_form input[type='submit'] {
     background: url(../img/send.svg) no-repeat center;
     background-size: contain;
@@ -265,4 +269,9 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
   break-inside: avoid;
   margin-bottom: 16px;
   width: 100%;
+}
+
+.loaded_other_profile_posts_heading{
+    font-size: 24px;
+    font-family: sans-serif;
 }
