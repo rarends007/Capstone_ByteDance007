@@ -72,7 +72,7 @@
         <nav>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/Member">Profile</a></li>
-                <li><a href="${pageContext.request.contextPath}/Member?action=get_all_users">All Site Users</a></li>
+                <li>Friends</li>
                 <li><a href="${pageContext.request.contextPath}/Message">Messages</a></li>
             </ul>
         </nav>

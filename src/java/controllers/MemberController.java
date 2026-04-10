@@ -153,12 +153,16 @@ public class MemberController extends HttpServlet {
 
                 break;
             case "get_all_users":
-                HashMap allUserHashMap = new HashMap();
-                allUserHashMap = UserDB.getAllUsers();
+                System.out.println("Member -> case 'get_all_users' hit");
+                HashMap allUsersHashMap = new HashMap();
+                allUsersHashMap = UserDB.getAllUsers();
+                System.out.println(allUsersHashMap);
+                request.setAttribute("allUsersHashMap", allUsersHashMap);
                 
-                request.setAttribute("allUsersHashMap", allUserHashMap);
+                url = "/member/show_all_profiles.jsp";
                 break;
-            case "load_other_profile_data":
+
+            case "load_other_user":
                 /*TODO: RA
                 //create a new jsp to put the viewed user data into based on the other user profile selected
                 //pull the other users profile data using DB functions. -> profile data needed -> 
