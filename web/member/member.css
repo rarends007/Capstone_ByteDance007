@@ -266,3 +266,14 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
   margin-bottom: 16px;
   width: 100%;
 }
+
+.follow_list {
+   list-style-type: none;
+   font-size: 40px;
+}
+
+.follow_list li {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
