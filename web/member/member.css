@@ -323,4 +323,15 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
     font-size: 16px;
     padding: 5px;
     width: auto;
+}    
+    
+.follow_list {
+   list-style-type: none;
+   font-size: 40px;
+}
+
+.follow_list li {
+   display: flex;
+   align-items: center;
+   gap: 10px;
 }
