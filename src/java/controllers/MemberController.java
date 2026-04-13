@@ -72,6 +72,8 @@ public class MemberController extends HttpServlet {
 
         String url = "/member/index.jsp";
 
+        String toOther = request.getParameter("to_other"); //Added s0 that the new comment will show up on post. for other profile functionality
+
         boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
         int userID = UserDB.getUserID(username);
 
@@ -80,7 +82,7 @@ public class MemberController extends HttpServlet {
 
             if (profilePhotoPathLoad == null) {
                 profilePhotoPathLoad = "";
-            } else {                
+            } else {
                 session.setAttribute("profile_photo", profilePhotoPathLoad);
                 System.out.println("photo path is: " + profilePhotoPathLoad);
             }
@@ -102,7 +104,7 @@ public class MemberController extends HttpServlet {
                 Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
                 errors.add("Unable to retrieve profile posts.");
             }
-            
+
         }
 
         switch (action) { //post
@@ -179,23 +181,23 @@ public class MemberController extends HttpServlet {
                 try {
                     HashMap<Integer, Post> loadedProfilePosts = new HashMap<Integer, Post>();
                     String loadedProfileStatus = "";
-                        
+
                     //get other users ID coming in from the show_all_profiles.jsp page request object
                     int loadedProfileUserID = Integer.parseInt(request.getParameter("userID"));
-                    
+
                     User loadedUserFromProfileselected = UserDB.getUser(loadedProfileUserID);
-                    
-                    if (loadedUserFromProfileselected != null){
+
+                    if (loadedUserFromProfileselected != null) {
                         request.setAttribute("loadedProfileUsername", loadedUserFromProfileselected.getUsername());
                     }
-                    
+
                     //get the follower and "following" and "followers" values for  loaded profile
                     try {
                         LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(loadedProfileUserID);
                         LinkedHashMap<Integer, String> followers = FollowersDB.getFollowers(loadedProfileUserID);
 
-                        request.setAttribute("numFollowing", following.size());
-                        request.setAttribute("numFollowers", followers.size());
+                        request.setAttribute("numFollowingOther", following.size());
+                        request.setAttribute("numFollowersOther", followers.size());
                     } catch (SQLException ex) {
                         errors.add("Unable to retrieve following numbers.");
                     }
@@ -204,7 +206,7 @@ public class MemberController extends HttpServlet {
                     try {
                         posts = PostDB.getUserPosts(loadedProfileUserID);
                         loadedProfileStatus = ProfileDB.getUserStatus(loadedProfileUserID);
-                        
+
                         request.setAttribute("posts", posts);
                         request.setAttribute("loadedProfileStatus", loadedProfileStatus);
                     } catch (SQLException ex) {
@@ -236,15 +238,14 @@ public class MemberController extends HttpServlet {
                 } catch (ServletException ex) {
                     System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
                 }
-                
+
                 String test = username + "/upload/";
                 int postId = -1;
                 boolean success = false;
-                if(!test.equals(imageURL) ){
-                    postId= PostDB.makePost(userID, imageURL, postText);
-                }
-                else{
-                    postId= PostDB.makePost(userID, null, postText);
+                if (!test.equals(imageURL)) {
+                    postId = PostDB.makePost(userID, imageURL, postText);
+                } else {
+                    postId = PostDB.makePost(userID, null, postText);
                     success = true;
                 }
                 if (postId != -1 && !test.equals(imageURL)) {
@@ -268,6 +269,10 @@ public class MemberController extends HttpServlet {
                     int postID = Integer.parseInt(request.getParameter("post_id"));
 
                     CommentDB.insertComment(userID, postID, commentText);
+
+                    if (toOther != null) {
+                        url = "/member/otherProfile.jsp";
+                    }
                 } catch (NumberFormatException ex) {
                     System.err.println("issue converting postID memberController case post_comment -> " + ex);
                 } catch (NullPointerException ex) {
@@ -290,7 +295,6 @@ public class MemberController extends HttpServlet {
                 } finally {
                     System.out.println("commentID successfully converted to int");
                 }
-
                 break;
             case "delete_post":
                 System.out.print("MemberController -> delete_post logic hit\n");
@@ -327,7 +331,7 @@ public class MemberController extends HttpServlet {
                     1. In the top get area declare a try/catch block to load notifications and set the JSP is_unseen_notification value to true if notifications are returned from 
                         getAllUnviewedNotificationsByUserID DB function
                     2. Pass the boolean value of isUnseenNotifications back to the nofication.jsp
-                */
+                 */
                 break;
 
         }
