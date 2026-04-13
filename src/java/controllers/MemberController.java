@@ -80,7 +80,7 @@ public class MemberController extends HttpServlet {
 
             if (profilePhotoPathLoad == null) {
                 profilePhotoPathLoad = "";
-            } else {                
+            } else {
                 session.setAttribute("profile_photo", profilePhotoPathLoad);
                 System.out.println("photo path is: " + profilePhotoPathLoad);
             }
@@ -102,6 +102,14 @@ public class MemberController extends HttpServlet {
                 Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
                 errors.add("Unable to retrieve profile posts.");
             }
+
+            System.out.println("Member -> case 'get_all_users' hit");
+            HashMap SuggestedUsersHashMap = new HashMap();
+            SuggestedUsersHashMap = UserDB.getSuggestedUsers(userID);
+            System.out.println(SuggestedUsersHashMap);
+            request.setAttribute("SuggestedUsersHashMap", SuggestedUsersHashMap);
+
+            url = "/member/index.jsp";
         }
 
         switch (action) { //post
@@ -162,7 +170,6 @@ public class MemberController extends HttpServlet {
 
                 url = "/member/show_all_profiles.jsp";
                 break;
-
             case "load_other_profile":
                 System.out.println("Member -> case 'load_other_profile' hit");
 
@@ -178,17 +185,17 @@ public class MemberController extends HttpServlet {
                 try {
                     HashMap<Integer, Post> loadedProfilePosts = new HashMap<Integer, Post>();
                     String loadedProfileStatus = "";
-                        
+
                     //get other users ID coming in from the show_all_profiles.jsp page request object
                     int loadedProfileUserID = Integer.parseInt(request.getParameter("userID"));
-                    
+
                     User loadedUserFromProfileselected = UserDB.getUser(loadedProfileUserID);
-                    
-                    if (loadedUserFromProfileselected != null){
+
+                    if (loadedUserFromProfileselected != null) {
                         request.setAttribute("loadedProfileUsername", loadedUserFromProfileselected.getUsername());
                     }
                     request.setAttribute("loadedProfileUserID", loadedProfileUserID);
-                    
+
                     //get the follower and "following" and "followers" values for  loaded profile
                     try {
                         LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(loadedProfileUserID);
@@ -204,7 +211,7 @@ public class MemberController extends HttpServlet {
                     try {
                         posts = PostDB.getUserPosts(loadedProfileUserID);
                         loadedProfileStatus = ProfileDB.getUserStatus(loadedProfileUserID);
-                        
+
                         request.setAttribute("posts", posts);
                         request.setAttribute("loadedProfileStatus", loadedProfileStatus);
                     } catch (SQLException ex) {
@@ -236,15 +243,14 @@ public class MemberController extends HttpServlet {
                 } catch (ServletException ex) {
                     System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
                 }
-                
+
                 String test = username + "/upload/";
                 int postId = -1;
                 boolean success = false;
-                if(!test.equals(imageURL) ){
-                    postId= PostDB.makePost(userID, imageURL, postText);
-                }
-                else{
-                    postId= PostDB.makePost(userID, null, postText);
+                if (!test.equals(imageURL)) {
+                    postId = PostDB.makePost(userID, imageURL, postText);
+                } else {
+                    postId = PostDB.makePost(userID, null, postText);
                     success = true;
                 }
                 if (postId != -1 && !test.equals(imageURL)) {

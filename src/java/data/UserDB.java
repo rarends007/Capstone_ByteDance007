@@ -319,6 +319,52 @@ public class UserDB {
 
         return userHashMap;
     }
+    
+    public static HashMap<Integer, User> getSuggestedUsers(int userID) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        HashMap<Integer, User> userHashMap = new HashMap<>();
+        String query = """
+                       SELECT *
+                       FROM user A
+                       WHERE user_if NOT IN (SELECT following_id FROM user_followers WHERE user_id = 1) AND user_id != 1
+                       LIMIT 5;
+                       """;
+
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userID);
+            rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String username = rs.getString("username");
+                    String firstname = rs.getString("firstname");
+                    String middlename = rs.getString("middlename");
+                    String lastname = rs.getString("lastname");
+                    String credential = rs.getString("credential");
+
+                    User user = new User(userId, username, firstname, middlename, lastname, credential);
+
+                    userHashMap.put(userID, user);
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("error retrieving userID -> UserDB -> getAllUser()");
+        }
+
+        DBUtil.closeResultSet(rs); //remove if not using SELECT and thus returning a resultset
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(connection);
+
+        return userHashMap;
+    }
 
     /**
      *
