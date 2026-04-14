@@ -64,6 +64,7 @@ public class MemberController extends HttpServlet {
         ArrayList messages = new ArrayList();
         HashMap<Integer, Post> posts = new HashMap<Integer, Post>();
         String userStatus = "";
+        HashMap SuggestedUsersHashMap = new HashMap();
 
         String action = request.getParameter("action");
         if (action == null) {
@@ -74,6 +75,9 @@ public class MemberController extends HttpServlet {
 
         boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
         int userID = UserDB.getUserID(username);
+
+        SuggestedUsersHashMap = UserDB.getSuggestedUsers(userID);
+        request.setAttribute("SuggestedUsersHashMap", SuggestedUsersHashMap);
 
         if (pageControllerIsMember) {
             String profilePhotoPathLoad = ProfileDB.getProfilePhotoPath(userID); //call db method to get the photo and later all profile info that is loaded will also be populated in this switch case as well
@@ -103,13 +107,6 @@ public class MemberController extends HttpServlet {
                 errors.add("Unable to retrieve profile posts.");
             }
 
-            System.out.println("Member -> case 'get_all_users' hit");
-            HashMap SuggestedUsersHashMap = new HashMap();
-            SuggestedUsersHashMap = UserDB.getSuggestedUsers(userID);
-            System.out.println(SuggestedUsersHashMap);
-            request.setAttribute("SuggestedUsersHashMap", SuggestedUsersHashMap);
-
-            url = "/member/index.jsp";
         }
 
         switch (action) { //post
@@ -134,6 +131,23 @@ public class MemberController extends HttpServlet {
 
                 url = "/member/index.jsp";
                 break;
+
+            case "uploadImage":
+                String image = "";
+                try {
+                    image = IO.uploadFileV2(request, response, messages, username);
+                    System.out.println("The profile photo path adding to db is: " + image);
+                } catch (ServletException ex) {
+                    System.out.println("Issue with Servlet file parts -> \nError thrown:" + ex);
+                }
+                boolean success = false;
+                success = PostDB.uploadImage(image, userID);
+                if (success) {
+                    action = "getImageForUser";
+                }
+                else{
+                    break;
+                }
             case "getImageForUser":
                 ArrayList<String> photoFrilePaths = new ArrayList();
                 try {
@@ -246,7 +260,7 @@ public class MemberController extends HttpServlet {
 
                 String test = username + "/upload/";
                 int postId = -1;
-                boolean success = false;
+                success = false;
                 if (!test.equals(imageURL)) {
                     postId = PostDB.makePost(userID, imageURL, postText);
                 } else {

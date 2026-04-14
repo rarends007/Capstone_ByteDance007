@@ -4,23 +4,29 @@
     Author     : ok797738
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <div class="right_panel">
     <div class="suggestion_container">
         <h4>Suggestion for you</h4>
-        <c:forEach var="users" items="${SuggestedUsersHashMap}">
-            <li>
-                <a href="${pageContext.request.contextPath}/Member?action=load_other_profile&userID=${users.value.getUserID()}">
-                    <div class="user_avatar"></div>
-                    <span>${users.value.getUsername()}</span>
-                </a>
-                <form action="${pageContext.request.contextPath}/Friends" method="post">
-                    <input type="hidden" name="action" value="followUser">
-                    <input type="hidden" name="followingID" value="${loadedProfileUserID}">
-                    <button type="submit" ><img src="${pageContext.request.contextPath}/img/add-user.svg" alt="alt"/></button>
-                </form>
-            </li>
-        </c:forEach>
+        <ul class="suggestion_list">
+            <c:forEach var="users" items="${SuggestedUsersHashMap}">
+                <li>
+                    <div class="suggestion_content">
+                        <div class="user_avatar">${users.value.getFirstname()},${users.value.getLastname()}</div>
+                        <a href="${pageContext.request.contextPath}/Member?action=load_other_profile&userID=${users.value.getUserID()}">
+                            <h4>${users.value.getFirstname()} ${users.value.getLastname()}</h4>
+                            <span class="under_text">${users.value.getUsername()}</span>
+                        </a>
+                    </div>
+                    <form action="${pageContext.request.contextPath}/Friends" method="post">
+                        <input type="hidden" name="action" value="followUser">
+                        <input type="hidden" name="followingID" value="${loadedProfileUserID}">
+                        <button type="submit" class="follow_btn"><img src="${pageContext.request.contextPath}/img/add-user.svg" alt="alt"/></button>
+                    </form>
+                </li>
+            </c:forEach>
+        </ul>
     </div>
 </div>

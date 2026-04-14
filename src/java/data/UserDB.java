@@ -329,14 +329,15 @@ public class UserDB {
         HashMap<Integer, User> userHashMap = new HashMap<>();
         String query = """
                        SELECT *
-                       FROM user A
-                       WHERE user_if NOT IN (SELECT following_id FROM user_followers WHERE user_id = 1) AND user_id != 1
+                       FROM user 
+                       WHERE user_id NOT IN (SELECT following_id FROM user_followers WHERE user_id = ?) AND user_id != ?
                        LIMIT 5;
                        """;
 
         try {
             ps = connection.prepareStatement(query);
             ps.setInt(1, userID);
+            ps.setInt(2, userID);
             rs = ps.executeQuery();
 
             if (rs != null) {
@@ -350,7 +351,7 @@ public class UserDB {
 
                     User user = new User(userId, username, firstname, middlename, lastname, credential);
 
-                    userHashMap.put(userID, user);
+                    userHashMap.put(userId, user);
                 }
 
             }
