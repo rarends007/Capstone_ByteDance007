@@ -63,12 +63,12 @@ public class NotificationDB {
         return notificationsHashMap;
 
     }
-    
+
     /**
-     * 
+     *
      * @param UserID
      * @param text
-     * @return 
+     * @return
      */
     public static boolean insertNotificationForUserByUserID(int UserID, String text) { //call anytime a message is sent or a user follows another user(for the user followed)
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -85,14 +85,14 @@ public class NotificationDB {
                        VALUES
                        (?, ?);
                      """;
-        try{
-           ps = connection.prepareStatement(query);
-           ps.setString(1, text);
-           ps.setInt(2, UserID);
-           result = ps.executeUpdate();
-           System.out.println("insertNotificationForUserByUserID() -> noficication inserted : " + result);
-           notificationInserted = true;
-        }catch(SQLException ex){
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, text);
+            ps.setInt(2, UserID);
+            result = ps.executeUpdate();
+            System.out.println("insertNotificationForUserByUserID() -> noficication inserted : " + result);
+            notificationInserted = true;
+        } catch (SQLException ex) {
             System.err.println(".insertNotificationForUserByUserID() -> \n\tSQL Error: " + ex);
         }
         return notificationInserted;
@@ -102,15 +102,22 @@ public class NotificationDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        
+
         int result = -1;
-        
+
         boolean notificationViewedSetTrue = false;
-        
+
         String query = """
                      
                      """;
         return notificationViewedSetTrue;
+
+    }
+
+    public static boolean getAllNotificationsForUserByUserID(int userID) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
         
         
     }

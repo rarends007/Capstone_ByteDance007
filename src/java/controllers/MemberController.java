@@ -106,6 +106,19 @@ public class MemberController extends HttpServlet {
             }
 
         }
+        
+        //Notifications init retreival 
+        /**
+         * GET
+                    1. In the top get area declare a try/catch block to load notifications and set the JSP is_unseen_notification value to true if notifications are returned from 
+                        getAllUnviewedNotificationsByUserID DB function
+                    2. Pass the boolean value of isUnseenNotifications back to the nofication.jsp
+         */
+        try{
+            
+        }catch(Exception ex){
+            System.err.println("Issue retreiving init notifications -> \n\tError: " + ex);
+        }
 
         switch (action) { //post
             case "uploadProfilePhoto":
@@ -324,14 +337,13 @@ public class MemberController extends HttpServlet {
                 System.out.println("entered display_notificatoins switch case.");
                 /*
                 TODO:
+                    insertNotificatoin fires if user messages another user
+                    Later if we create a way for user to follow another user, then insert a notification to the followed user in that event.
                     POST
                     1. populate a collection of notifications when jsp notification icon clicked
                     2. pass that collection back to the jsp using a variable called notificationsHashMap type <Integer, Notfication>
                     
-                    GET
-                    1. In the top get area declare a try/catch block to load notifications and set the JSP is_unseen_notification value to true if notifications are returned from 
-                        getAllUnviewedNotificationsByUserID DB function
-                    2. Pass the boolean value of isUnseenNotifications back to the nofication.jsp
+                    
                  */
                 break;
 
