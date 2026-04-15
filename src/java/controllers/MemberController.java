@@ -73,6 +73,8 @@ public class MemberController extends HttpServlet {
 
         String url = "/member/index.jsp";
 
+        String toOther = request.getParameter("to_other"); //Added s0 that the new comment will show up on post. for other profile functionality
+
         boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
         int userID = UserDB.getUserID(username);
 
@@ -107,6 +109,19 @@ public class MemberController extends HttpServlet {
                 errors.add("Unable to retrieve profile posts.");
             }
 
+        }
+        
+        //Notifications init retreival 
+        /**
+         * GET
+                    1. In the top get area declare a try/catch block to load notifications and set the JSP is_unseen_notification value to true if notifications are returned from 
+                        getAllUnviewedNotificationsByUserID DB function
+                    2. Pass the boolean value of isUnseenNotifications back to the nofication.jsp
+         */
+        try{
+            
+        }catch(Exception ex){
+            System.err.println("Issue retreiving init notifications -> \n\tError: " + ex);
         }
 
         switch (action) { //post
@@ -215,8 +230,8 @@ public class MemberController extends HttpServlet {
                         LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(loadedProfileUserID);
                         LinkedHashMap<Integer, String> followers = FollowersDB.getFollowers(loadedProfileUserID);
 
-                        request.setAttribute("numFollowing", following.size());
-                        request.setAttribute("numFollowers", followers.size());
+                        request.setAttribute("numFollowingOther", following.size());
+                        request.setAttribute("numFollowersOther", followers.size());
                     } catch (SQLException ex) {
                         errors.add("Unable to retrieve following numbers.");
                     }
@@ -288,6 +303,10 @@ public class MemberController extends HttpServlet {
                     int postID = Integer.parseInt(request.getParameter("post_id"));
 
                     CommentDB.insertComment(userID, postID, commentText);
+
+                    if (toOther != null) {
+                        url = "/member/otherProfile.jsp";
+                    }
                 } catch (NumberFormatException ex) {
                     System.err.println("issue converting postID memberController case post_comment -> " + ex);
                 } catch (NullPointerException ex) {
@@ -310,7 +329,6 @@ public class MemberController extends HttpServlet {
                 } finally {
                     System.out.println("commentID successfully converted to int");
                 }
-
                 break;
             case "delete_post":
                 System.out.print("MemberController -> delete_post logic hit\n");
@@ -335,6 +353,19 @@ public class MemberController extends HttpServlet {
                 } finally {
                     System.out.println("postID successfully converted to int");
                 }
+                break;
+            case "display_notifications":
+                System.out.println("entered display_notificatoins switch case.");
+                /*
+                TODO:
+                    insertNotificatoin fires if user messages another user
+                    Later if we create a way for user to follow another user, then insert a notification to the followed user in that event.
+                    POST
+                    1. populate a collection of notifications when jsp notification icon clicked
+                    2. pass that collection back to the jsp using a variable called notificationsHashMap type <Integer, Notfication>
+                    
+                    
+                 */
                 break;
 
         }
