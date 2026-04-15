@@ -58,32 +58,60 @@ public class FriendsController extends HttpServlet {
 
                 try {
                     follows = FollowersDB.getFollowing(userID);
+                    session.setAttribute("follows", follows);
                 } catch (Exception ex) {
                     message = "Unable to retrieve following.";
                 }
 
                 if (follows.isEmpty()) {
-                    message = "You aren't following anyone!";
+                    request.setAttribute("noFollow", "You aren't following anyone!");
                 }
 
-                request.setAttribute("title", "Following");
+                session.setAttribute("title", "Following");
             }
             case "getFollowers" -> {
 
                 try {
                     follows= FollowersDB.getFollowers(userID);
+                    session.setAttribute("follows", follows);
                 } catch (Exception ex) {
                     message = "Unable to retrieve followers.";
                 }
 
                 if (follows.isEmpty()) {
-                    message = "You have no followers!";
+                    request.setAttribute("noFollow", "You have no followers!");
                 }
 
-                request.setAttribute("title", "Followers");
+                session.setAttribute("title", "Followers");
+            }
+            case "removeFollow" -> {
+                int followingID = Integer.parseInt(request.getParameter("followingID"));
+                
+                try {
+                    if (session.getAttribute("title").equals("Followers")) {
+                        FollowersDB.removeFollow(followingID, userID);
+                        message = "Successfully removed follower";
+                    } else {
+                        FollowersDB.removeFollow(userID, followingID);
+                        message = "Removed from your following list";
+                    }
+                } catch (Exception ex) {
+                    message = "Unable to remove user from list.";
+                }
+            }
+            case "followUser" -> {
+                int followingID = Integer.parseInt(request.getParameter("followingID"));
+                
+                try {
+                    FollowersDB.addFollow(userID, followingID);
+                    System.out.println("Successfully followed user");
+                } catch (Exception ex) {
+                    System.out.println("Unable follow user");
+                }
+                
+                url = "/Member?action=load_other_profile&userID=" + followingID;
             }
         }
-        request.setAttribute("follows", follows);
         request.setAttribute("message", message);
 
         getServletContext()

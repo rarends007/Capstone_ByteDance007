@@ -15,14 +15,24 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/member/member.css" />
     </head>
     <body>
-        <div class=".container">
-            <h3>${title}</h3>
-            <ul>
-                <c:forEach items="${follows}" var="follows">
-                    <li>${follows.value}</li>
+        <div>
+        <h3>${title}</h3>
+        <div class="container">
+            <p>${noFollow}</p>
+            <ul class="follow_list">
+                <c:forEach items="${follows}" var="follow">
+                    <li>${follow.value}
+                        <form action="${pageContext.request.contextPath}/Friends" method="post">
+                            <input type="hidden" name="action" value="removeFollow">
+                            <input type="hidden" name="followingID" value="${follow.key}">
+                            <input type="submit" value="Remove" class="button_primary">
+                        </form>
+                    </li>
                 </c:forEach>
             </ul>
-            <p>${message}</p>
+            <a href="Friends?action=get${title}" class="button_primary">Reload list</a>
+        </div>
+        <p>${message}</p>
         </div>
     </body>
 </html>

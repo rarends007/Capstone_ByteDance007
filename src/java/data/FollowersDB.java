@@ -96,4 +96,53 @@ public class FollowersDB {
 
         return followers;
     }
+    
+    public static int removeFollow(int userID, int followingID)
+            throws SQLException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+
+        String query = """
+                       DELETE FROM user_followers 
+                       WHERE user_id = ? 
+                       AND following_id = ?
+                       """;
+
+        ps = connection.prepareStatement(query);
+        ps.setInt(1, userID);
+        ps.setInt(2, followingID);
+
+        int rows = ps.executeUpdate();
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(connection);
+
+        return rows;
+    }
+    
+    public static int addFollow(int userID, int followingID)
+            throws SQLException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        
+
+        String query = """
+                       INSERT INTO user_followers 
+                       (user_id, following_id)
+                       VALUES (?, ?)
+                       """;
+
+        ps = connection.prepareStatement(query);
+        ps.setInt(1, userID);
+        ps.setInt(2, followingID);
+
+        int rows = ps.executeUpdate();
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(connection);
+
+        return rows;
+    }
 }
