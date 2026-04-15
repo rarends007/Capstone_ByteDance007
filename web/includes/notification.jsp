@@ -10,18 +10,27 @@
 <html>
     <div>
         <form action="${pageContext.request.contextPath}/Member" method="POST">
+            <!--<!-- https://stackoverflow.com/questions/14199788/how-do-i-use-an-image-as-a-submit-button -->
             
-            <input type="image" name="submit" src="${pageContext.request.contextPath}/img/notification_icon_50px.png" border="0" alt="viewNotification" style="width:50px; height: 50px"/>
+            <input type="hidden" name="action" value="display_notifications"/>
+            
+            <c:choose> 
+                <c:when test="insert_test_condition_Here_Soon">
+                    <input type="image" name="submit" src="${pageContext.request.contextPath}/img/notification_icon_50px.png" 
+                    border="0" alt="viewNotification" style="width:50px; height: 50px"/>
+                </c:when>
+                <c:otherwise>
+                   <input type="image" name="submit" src="${pageContext.request.contextPath}/img/notification_icon_50px.png" 
+                   border="0" alt="viewNotification" style="width:50px; height: 50px"/>
+                </c:otherwise>
+            </c:choose>
+            
         </form>
-        <!--<!-- https://stackoverflow.com/questions/14199788/how-do-i-use-an-image-as-a-submit-button -->
-        <c:choose> 
-            <c:when test="insert_test_condition_Here_Soon">
-                <p>Your cart is empty.</p> 
-            </c:when>
-            <c:otherwise>
-                <p>Your cart is empty.</p> 
-            </c:otherwise>
-        </c:choose>
+    </div>
+    <div>
+        <c:forEach var="notification" items="${notificationsArr}">
+            
+        </c:forEach>
     </div>
 
 </html>

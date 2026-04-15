@@ -321,12 +321,13 @@ public class MemberController extends HttpServlet {
                 }
                 break;
             case "display_notifications":
+                System.out.println("entered display_notificatoins switch case.");
                 /*
                 TODO:
                     POST
                     1. populate a collection of notifications when jsp notification icon clicked
                     2. pass that collection back to the jsp using a variable called notificationsHashMap type <Integer, Notfication>
-                
+                    
                     GET
                     1. In the top get area declare a try/catch block to load notifications and set the JSP is_unseen_notification value to true if notifications are returned from 
                         getAllUnviewedNotificationsByUserID DB function

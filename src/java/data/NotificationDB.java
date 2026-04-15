@@ -63,8 +63,14 @@ public class NotificationDB {
         return notificationsHashMap;
 
     }
-
-    public boolean insertNotificationForUserByUserID(int UserID) { //call anytime a message is sent or a user follows another user(for the user followed)
+    
+    /**
+     * 
+     * @param UserID
+     * @param text
+     * @return 
+     */
+    public static boolean insertNotificationForUserByUserID(int UserID, String text) { //call anytime a message is sent or a user follows another user(for the user followed)
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -74,13 +80,25 @@ public class NotificationDB {
         boolean notificationInserted = false;
 
         String query = """
-                     
+                       INSERT INTO notification
+                       (notification_text, notified_user_id)
+                       VALUES
+                       (?, ?);
                      """;
-
+        try{
+           ps = connection.prepareStatement(query);
+           ps.setString(1, text);
+           ps.setInt(2, UserID);
+           result = ps.executeUpdate();
+           System.out.println("insertNotificationForUserByUserID() -> noficication inserted : " + result);
+           notificationInserted = true;
+        }catch(SQLException ex){
+            System.err.println(".insertNotificationForUserByUserID() -> \n\tSQL Error: " + ex);
+        }
         return notificationInserted;
     }
 
-    public boolean setNotificationViewedByNotificationID(int NotificationID) { //call when user clicks notification icon
+    public static boolean setNotificationViewedByNotificationID(int NotificationID) { //call when user clicks notification icon
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
