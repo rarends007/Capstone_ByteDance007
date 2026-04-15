@@ -249,10 +249,6 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
     background-color: #2A2742;
 }
 
-.main_content>div {
-    margin-bottom: 15px;
-}
-
 
 .comments_container::-webkit-scrollbar {
     width: .5em;
@@ -369,7 +365,7 @@ Retrieved 2026-03-21, License - CC BY-SA 3.0
     height: 100%;
 }
 
-.user_avatar {
+.user_avatar, .feed_user {
     width: 40px;
     background: #1aa7a7;
     border-radius: 50%;

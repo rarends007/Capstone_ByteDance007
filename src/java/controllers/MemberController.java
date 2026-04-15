@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -75,13 +76,14 @@ public class MemberController extends HttpServlet {
 
         boolean pageControllerIsMember = request.getRequestURL().toString().contains("Member");//getting request url -> https://kodejava.org/how-do-i-get-servlet-request-url-information/
         int userID = UserDB.getUserID(username);
+        LinkedHashMap<String, HashMap<Integer, Post>> feed = new LinkedHashMap<>();
 
         SuggestedUsersHashMap = UserDB.getSuggestedUsers(userID);
         request.setAttribute("SuggestedUsersHashMap", SuggestedUsersHashMap);
 
         if (pageControllerIsMember) {
             String profilePhotoPathLoad = ProfileDB.getProfilePhotoPath(userID); //call db method to get the photo and later all profile info that is loaded will also be populated in this switch case as well
-
+            
             if (profilePhotoPathLoad == null) {
                 profilePhotoPathLoad = "";
             } else {
@@ -92,9 +94,15 @@ public class MemberController extends HttpServlet {
             try {
                 LinkedHashMap<Integer, String> following = FollowersDB.getFollowing(userID);
                 LinkedHashMap<Integer, String> followers = FollowersDB.getFollowers(userID);
+                        
+                for (Map.Entry<Integer, String> entry : following.entrySet()) {
+                     HashMap<Integer, Post> followingPosts  = PostDB.getUserPosts(entry.getKey());      
+                     feed.put(entry.getValue(), followingPosts);                    
+                }
 
                 request.setAttribute("numFollowing", following.size());
                 request.setAttribute("numFollowers", followers.size());
+                request.setAttribute("Following", feed);
             } catch (SQLException ex) {
                 errors.add("Unable to retrieve following numbers.");
             }
@@ -106,8 +114,9 @@ public class MemberController extends HttpServlet {
                 Logger.getLogger(MemberController.class.getName()).log(Level.SEVERE, null, ex);
                 errors.add("Unable to retrieve profile posts.");
             }
-
         }
+        
+        
 
         switch (action) { //post
             case "uploadProfilePhoto":

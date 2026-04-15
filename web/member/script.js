@@ -147,3 +147,10 @@ userAvatar.forEach(avatar => {
     const abbreviation = array.map(name => name.at(0));
     avatar.textContent = abbreviation.toString().replace(',', '');
 });
+
+feedUsers = document.querySelectorAll(".feed_user");
+
+feedUsers.forEach(avatar => {
+    username = avatar.textContent.trim()[0] + avatar.textContent.trim()[1];
+    avatar.textContent = username;
+});

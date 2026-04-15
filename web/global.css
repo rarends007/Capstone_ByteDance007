@@ -496,7 +496,9 @@ nav li {
     flex: 1;
 }
 
-.main_content>div {
+.main_content> section>div {
+    
+    margin-bottom: 15px;
     padding: 30px;
     border-radius: 15px;
 }
