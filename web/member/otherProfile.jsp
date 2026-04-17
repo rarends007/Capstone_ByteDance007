@@ -18,7 +18,7 @@
 <body>
     <c:import url="left_panel_other_profile.jsp" />
     <div class="main_content">
-        <div>
+        <div class="button-container">
         <form action="${pageContext.request.contextPath}/Friends" method="post">
             <input type="hidden" name="action" value="followUser">
             <input type="hidden" name="followingID" value="${loadedProfileUserID}">
