@@ -135,7 +135,7 @@ public class BlockedDB {
 
         rs = ps.executeQuery();
 
-        if (rs != null) {
+        if (rs.next()) {
             blocked = true;
         }
 

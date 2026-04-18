@@ -30,6 +30,7 @@
                     </li>
                 </c:forEach>
             </ul>
+            <a href="Member?action=get_all_users" class="button_secondary">All Users</a>
             <a href="Block?action=getBlockedUsers" class="button_primary">Reload list</a>
         </div>
         <p>${message}</p>

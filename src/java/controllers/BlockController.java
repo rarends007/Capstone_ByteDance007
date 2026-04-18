@@ -56,6 +56,9 @@ public class BlockController extends HttpServlet {
             case ("getBlockedUsers"):
                 try {
                     blocked = BlockedDB.getBlockedUsers(userID);
+                    if (blocked.isEmpty()) {
+                        request.setAttribute("noneBlocked", "No users blocked.");
+                    }
                     session.setAttribute("blockedUsers", blocked);
                 } catch (Exception ex) {
                     error = "Error retrieving blocked users";
@@ -63,7 +66,6 @@ public class BlockController extends HttpServlet {
                 break;
             case ("blockUser"):
                 int blockedUserID = Integer.parseInt(request.getParameter("blockedUserID"));
-                boolean success = false;
 
                 try {
                     BlockedDB.blockUser(userID, blockedUserID);

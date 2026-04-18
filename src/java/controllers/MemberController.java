@@ -227,8 +227,11 @@ public class MemberController extends HttpServlet {
                     request.setAttribute("loadedProfileUserID", loadedProfileUserID);
                     
                     try {
-                    if (BlockedDB.isUserBlocked(userID, loadedProfileUserID)) {
+                    if (BlockedDB.isUserBlocked(userID, loadedProfileUserID)) { //checks if user has other user blocked
                         url = "/Block?action=getBlockedUsers";
+                        break;
+                    } else if (BlockedDB.isUserBlocked(loadedProfileUserID, userID)) { //checks if other user has current user blocked
+                        url = "/Member?action=get_all_users";
                         break;
                     }
                     } catch (Exception ex) {
