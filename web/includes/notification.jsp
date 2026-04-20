@@ -32,7 +32,9 @@
     <div class="hidden" id="notification_view">
         <c:forEach var="map" items="${notificationsMap}">
             <div>
-                <p>${map.value.getNotificationInfo()}<br></p>
+                <textarea rows="5" cols="40">
+                    ${map.value.getNotificationInfo()}<br>
+                </textarea>
             </div>
         </c:forEach>
     </div>
