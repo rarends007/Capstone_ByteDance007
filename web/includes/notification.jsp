@@ -15,9 +15,9 @@
             <input type="hidden" name="action" value="display_notifications"/>
 
         </form>
-            
-            <div  id="toggle_notifications_button">
-                <c:choose> 
+
+        <div  id="toggle_notifications_button">
+            <c:choose> 
                 <c:when test="${unviewedNotificationsExist}">
                     <input type="image" name="submit" src="${pageContext.request.contextPath}/img/notification_icon_50px_Green.png" 
                            border="0" alt="viewNotification" style="width:50px; height: 50px"/>
@@ -27,31 +27,33 @@
                            border="0" alt="viewNotification" style="width:50px; height: 50px"/>
                 </c:otherwise>
             </c:choose>
-            </div>
+        </div>
     </div>
     <div class="hidden" id="notification_view">
+
+    <div>
+        <textarea rows="5" cols="40" readonly="true">
         <c:forEach var="map" items="${notificationsMap}">
-            <div>
-                <textarea rows="5" cols="40">
-                    ${map.value.getNotificationInfo()}<br>
-                </textarea>
-            </div>
+        ${map.value.getNotificationInfo()}
         </c:forEach>
+        </textarea>
+    </div>
+
     </div>
 
     <script>
-            "use strict";
-             const notificationsView = document.querySelector("#notification_view");
-             const toggleNotificationsButton = document.querySelector("#toggle_notifications_button");
-             
-             toggleNotificationsButton.addEventListener("click", () => {
-                 console.log("toggle notifications button clicked");
-                 if(notificationsView.classList.contains("hidden")){
-                     notificationsView.classList.remove("hidden");
-                 }else{
-                     notificationsView.classList.add("hidden");
-                 }
-             });
+        "use strict";
+        const notificationsView = document.querySelector("#notification_view");
+        const toggleNotificationsButton = document.querySelector("#toggle_notifications_button");
+
+        toggleNotificationsButton.addEventListener("click", () => {
+            console.log("toggle notifications button clicked");
+            if (notificationsView.classList.contains("hidden")) {
+                notificationsView.classList.remove("hidden");
+            } else {
+                notificationsView.classList.add("hidden");
+            }
+        });
 
     </script>
 
