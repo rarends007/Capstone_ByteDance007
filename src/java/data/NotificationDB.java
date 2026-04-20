@@ -4,7 +4,6 @@
  */
 package data;
 
-import business.bytespace.Notification;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -162,11 +161,11 @@ public class NotificationDB {
 
                 int notificationID = rs.getInt("notification_id");
 
-                notification.setNotificationID(rs.getInt(notificationID));
+                notification.setNotificationID(notificationID);
                 notification.setNotificationInfo(rs.getString("notification_text"));
                 notification.setIsViewed(rs.getBoolean("is_viewed"));
-                notification.setNotifiedUserID(rs.getInt("user_id"));
-
+                notification.setNotifiedUserID(rs.getInt("notified_user_id"));
+                
                 notificationsMap.put(notificationID, notification);
 
             }

@@ -4,12 +4,14 @@
  */
 package controllers;
 
+import business.bytespace.Notification;
 import business.bytespace.Super.Post;
 import business.bytespace.Super.User;
 import data.BlockedDB;
 import data.CommentDB;
 import data.FollowersDB;
 import data.ImageDB;
+import data.NotificationDB;
 import data.PostDB;
 import data.ProfileDB;
 import data.UserDB;
@@ -119,10 +121,21 @@ public class MemberController extends HttpServlet {
                         getAllUnviewedNotificationsByUserID DB function
                     2. Pass the boolean value of isUnseenNotifications back to the nofication.jsp
          */
-        try{
+       try{
+            HashMap<Integer, Notification> AllNotificationsMap = NotificationDB.getAllNotificationsForUserByUserID(userID);
+            request.setAttribute("notificationsMap", AllNotificationsMap);
+            System.out.println("MemberController -> Notifications map loaded.");
             
+            boolean unviewedNotificationsExist = false;
+            for ( Notification notification : AllNotificationsMap.values()){
+                if (notification.getIsViewed() == false) {
+                      unviewedNotificationsExist = true;
+                      System.out.println("There are unviewed notifications for user " + username);
+                }
+                request.setAttribute("unviewedNotificationsExist", unviewedNotificationsExist);
+            }
         }catch(Exception ex){
-            System.err.println("Issue retreiving init notifications -> \n\tError: " + ex);
+            System.err.println("Exception getting all notifications for user " + username + "NotificationController -> \n\txception: "  + ex);
         }
 
         switch (action) { //post

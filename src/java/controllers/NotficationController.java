@@ -5,8 +5,10 @@
 package controllers;
 
 import business.bytespace.Message;
+import business.bytespace.Notification;
 import business.bytespace.Super.User;
 import data.MessageDB;
+import data.NotificationDB;
 import data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,23 +47,44 @@ public class NotficationController extends HttpServlet {
         HttpSession session = request.getSession();
         String username = session.getAttribute("username").toString();
         String loggedInUserID = session.getAttribute("userID").toString();
+        Integer loggedInUserIDInt = -1;
+        try{
+            loggedInUserIDInt = (int) Integer.valueOf(loggedInUserID);
+        }catch(NumberFormatException ex) {
+            System.err.println("Issue parsing the loggedInUserID -> \nNumberFormatException -> " + ex );
+        }
         
         String url = "/Member"; //call member controller so that the profile data loads, should be able to pass URL params too.
         
         String action = request.getParameter("action");
+        
+        
+        try{
+            HashMap<Integer, Notification> AllNotificationsMap = NotificationDB.getAllNotificationsForUserByUserID(loggedInUserIDInt);
+            request.setAttribute("notificationsMap", AllNotificationsMap);
+            System.out.println("NotificationController -> Notifications map loaded.");
+        }catch(Exception ex){
+            System.err.println("Exception getting all notifications for user " + username + "NotificationController -> \n\txception: "  + ex);
+        }
 
         switch (action) {
             case "display_notifications":
                 System.out.println("entered display_notificatoins switch case.");
                 /*
                 TODO:
-                    insertNotificatoin fires if user messages another user
-                    Later if we create a way for user to follow another user, then insert a notification to the followed user in that event.
-                    POST
-                    1. populate a collection of notifications when jsp notification icon clicked
-                    2. pass that collection back to the jsp using a variable called notificationsHashMap type <Integer, Notfication>
-                    
-                    
+                    insertNotificatoin fires if user messages another user - DONE
+                    Later if we create a way for user to follow another user, then insert a notification to the followed user in that event. -DONE
+                    GET
+                    1. populate a collection of notifications when jsp notification icon clicked - DONE
+                    2. pass that collection back to the jsp using a variable called notificationsMap type <Integer, Notfication> - DONE
+                
+                    * Now in this case display_notificatoins -> 
+                     1. On click remove hide CSS, on click notifications button again, readd hide CSS to notification list div using JS
+                     2. Anytime notification icon clicked, set all notifications is_viewed value to false for the user. 
+                            Use CSS to make it look different based on that value -> consult Oleksandr about what he 
+                                wants to do for that CSS
+                
+                
                  */
                 break;
 
